@@ -1,0 +1,16 @@
+Useful commands
+
+https://github.com/ReedOnly/superDARN-RFEfinder.git
+
+Making new local copy
+git clone --branch work-in-progress https://github.com/ReedOnly/superDARN-RFEfinder.git
+
+
+download from git
+git pull origin work-in-progress
+
+upload to git:
+git add .
+git commit
+git push origin work-in-progress
+

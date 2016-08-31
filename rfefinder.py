@@ -1,5 +1,4 @@
 #superDARN rfe plotter        Kristian reed 09.08.2016
-#is it here?!?ab
 import matplotlib
 matplotlib.use('Agg') # Must be before importing matplotlib.pyplot or pylab!
 from davitpy import pydarn

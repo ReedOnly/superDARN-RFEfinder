@@ -16,6 +16,7 @@ git push origin work-in-progress
 
 
 Other commands:
+git status
 
 git branch branch_name		#Create new branch
 git branch -d branch_name	#Delete local branch
@@ -29,5 +30,5 @@ Set up git:
 git config --global user.name "Your Name here"
 git config --global user.email "your_email@domainname.com"
 
-git remote -v
+git remote -v			#Check current labels
 

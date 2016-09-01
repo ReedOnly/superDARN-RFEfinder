@@ -32,4 +32,6 @@ git config --global user.email "your_email@domainname.com"
 
 git remote set-url origin ssh://git@github.com:ReedOnly/superDARN-RFEfinder.git
 
+https://github.com/ReedOnly/superDARN-RFEfinder.git
+
 git remote -v			#Check current labels

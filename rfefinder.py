@@ -41,7 +41,7 @@ else:
 	newpath=os.getcwd()+'/'+datetime.datetime.now().strftime("%Y-%m-%d-%H.%M/")
 
 if not os.makedirs.exists(newpath):
-os.makedirs(newpath)
+	os.makedirs(newpath)
 
 #Loading stored file
 if LoadFile: rfe=load(os.getcwd()+'/Files/'+'2016-08-17-10.31/2014-12-15-0730.npy')#15dec2014.npy

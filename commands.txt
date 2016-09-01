@@ -1,0 +1,34 @@
+Useful commands
+
+https://github.com/ReedOnly/superDARN-RFEfinder.git
+
+Making new local copy
+git clone --branch work-in-progress https://github.com/ReedOnly/superDARN-RFEfinder.git
+
+
+Download from git
+git pull origin work-in-progress
+
+Upload to git:
+git add .
+git commit -m 'comment'
+git push origin work-in-progress
+
+
+Other commands:
+git status
+
+git branch branch_name		#Create new branch
+git branch -d branch_name	#Delete local branch
+git push origin --branch_name	#Delete remote branch
+git branch -a 			#List branches
+git checkout branch_name	#Change branch
+
+
+
+Set up git:
+git config --global user.name "Your Name here"
+git config --global user.email "your_email@domainname.com"
+
+git remote -v			#Check current labels
+

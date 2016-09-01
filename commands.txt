@@ -25,15 +25,17 @@ git branch -a 			#List branches
 git checkout branch_name	#Change branch
 
 
-
 Set up git:
 git config --global user.name "ReedOnly"
-git config --global user.email "your_email@domainname.com"
+git config --global user.email "kristian_reed@yahoo.no"
 
-git remote set-url origin ssh://git@github.com:ReedOnly/superDARN-RFEfinder.git
 
-https://github.com/ReedOnly/superDARN-RFEfinder.git
+git remote set-url origin https://github.com/ReedOnly/superDARN-RFEfinder.git
 
 git remote -v			#Check current labels
 
-edit2
+To work on SSL computer:
+git config --global http.sslverify false
+git remote set-url origin https://ReedOnly@github.com/ReedOnly/superDARN-RFEfinder.git
+git config --global --unset-all user.name
+git config --global --unset-all user.email

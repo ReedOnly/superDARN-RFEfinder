@@ -119,8 +119,7 @@ if fanPlot and len(rfe)>1:
                                 scale=[-500,500],coords='mag',gsct=False,fill=True,
                                 show=False, png=True,pdf=False,dpi=200)
         print 'time used: '+ secondsToStr(time.clock()-timerS)
-		plt.close()
-    print 'Saved fan plot figure'
+    print 'Saved fan plot figures'
     
 timerE=time.clock()
 print 'Total time used: '+secondsToStr(timerE-timerS)

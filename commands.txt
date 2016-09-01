@@ -36,4 +36,4 @@ https://github.com/ReedOnly/superDARN-RFEfinder.git
 
 git remote -v			#Check current labels
 
-edit
+edit2

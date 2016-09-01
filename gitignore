@@ -1,0 +1,6 @@
+#Files to ignore uploading
+
+*.pyc
+
+files/
+sample/

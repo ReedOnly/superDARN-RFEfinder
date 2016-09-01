@@ -10,7 +10,7 @@ Download from git
 git pull origin work-in-progress
 
 Upload to git:
-git add .
+git add *
 git commit -m 'comment'
 git push origin work-in-progress
 
@@ -27,9 +27,7 @@ git checkout branch_name	#Change branch
 
 
 Set up git:
-git config --global user.name "Your Name here"
+git config --global user.name "ReedOnly"
 git config --global user.email "your_email@domainname.com"
 
 git remote -v			#Check current labels
-
-shalala

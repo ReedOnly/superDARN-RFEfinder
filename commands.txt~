@@ -39,5 +39,3 @@ git config --global http.sslverify false
 git remote set-url origin https://ReedOnly@github.com/ReedOnly/superDARN-RFEfinder.git
 git config --global --unset-all user.name
 git config --global --unset-all user.email
-
-update now?

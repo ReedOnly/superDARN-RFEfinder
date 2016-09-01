@@ -22,10 +22,11 @@ start=time.clock()
 
 #Initializing
 sTime = dt.datetime(2014,12,15,7,30)        #Scanning start Time
-eTime = dt.datetime(2014,12,15,7,50)         #Scanning end time
+eTime = dt.datetime(2014,12,15,7,40)         #Scanning end time
 radars=['inv']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file
+SaveScratch=False	#Save in /scratch folder
 SaveXlsx=True      #Save as .xlsx spreadsheet
 SaveNpy=True        #Save as .npy file
 RFEplot=True        #Make RFE plot
@@ -34,8 +35,13 @@ fanPlot=True
 timerS=time.clock()
 
 #Make path for storage
-newpath='/scratch/rfeFiles/'+datetime.datetime.now().strftime("%Y-%m-%d-%H.%M/")
-os.makedirs(newpath)
+if SaveScratch:
+	newpath='/scratch/rfeFiles/'+datetime.datetime.now().strftime("%Y-%m-%d-%H.%M/")
+else:
+	newpath=os.getcwd()+'/'+datetime.datetime.now().strftime("%Y-%m-%d-%H.%M/")
+
+if not os.path.exists(newpath):
+	os.makedirs(newpath)
 
 #Loading stored file
 if LoadFile: rfe=load(os.getcwd()+'/Files/'+'2016-08-17-10.31/2014-12-15-0730.npy')#15dec2014.npy
@@ -111,9 +117,9 @@ if fanPlot and len(rfe)>1:
         #i=-5+n
         plotFanRfe(rfe[i,6],rfe[i,5],newpath,rfe[i,7],[rfe[i,0]], param='velocity',interval=60, fileType='fitacf',
                                 scale=[-500,500],coords='mag',gsct=False,fill=True,
-                                show=False, png=True,pdf=False,dpi=300)
+                                show=False, png=True,pdf=False,dpi=200)
         print 'time used: '+ secondsToStr(time.clock()-timerS)
-    print 'Saved fan plot figure'
+    print 'Saved fan plot figures'
     
 timerE=time.clock()
 print 'Total time used: '+secondsToStr(timerE-timerS)

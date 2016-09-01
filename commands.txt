@@ -32,3 +32,4 @@ git config --global user.email "your_email@domainname.com"
 
 git remote -v			#Check current labels
 
+shalala

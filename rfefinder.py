@@ -40,7 +40,7 @@ if SaveScratch:
 else:
 	newpath=os.getcwd()+'/'+datetime.datetime.now().strftime("%Y-%m-%d-%H.%M/")
 
-if not os.makedirs.exists(newpath):
+if not os.path.exists(newpath):
 	os.makedirs(newpath)
 
 #Loading stored file

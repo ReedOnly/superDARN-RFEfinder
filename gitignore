@@ -3,5 +3,5 @@
 *.pyc
 *~
 
-files/
-sample/
+#files/
+#sample/

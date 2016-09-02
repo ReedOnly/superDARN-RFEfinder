@@ -10,7 +10,12 @@ Download from git
 git pull origin work-in-progress
 
 Upload to git:
-git add *
+git add -A #stages All
+git add . #stages new and modified, without deleted
+git add -u #stages modified and deleted, without new
+
+git reset #Undo staging
+
 git commit -m 'comment'
 git push origin work-in-progress
 
@@ -20,7 +25,7 @@ git status
 
 git branch branch_name		#Create new branch
 git branch -d branch_name	#Delete local branch
-git push origin --branch_name	#Delete remote branch
+git push origin --delete branch_name	#Delete remote branch
 git branch -a 			#List branches
 git checkout branch_name	#Change branch
 

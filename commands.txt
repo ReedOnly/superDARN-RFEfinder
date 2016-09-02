@@ -22,6 +22,7 @@ git push origin work-in-progress
 
 Other commands:
 git status
+git rm file	#Delete file or folder
 
 git branch branch_name		#Create new branch
 git branch -d branch_name	#Delete local branch
@@ -44,5 +45,3 @@ git config --global http.sslverify false
 git remote set-url origin https://ReedOnly@github.com/ReedOnly/superDARN-RFEfinder.git
 git config --global --unset-all user.name
 git config --global --unset-all user.email
-
-update now?

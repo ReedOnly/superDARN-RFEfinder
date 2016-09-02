@@ -3,6 +3,7 @@
 *.pyc
 *~
 
+rfefinder.pyc
 secondsToStr.pyc
 fanRfe.pyc
 sdread.pyc

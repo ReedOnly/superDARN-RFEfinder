@@ -7,5 +7,5 @@ secondsToStr.pyc
 fanRfe.pyc
 sdread.pyc
 
-files/
-sample/
+files/**
+sample/**

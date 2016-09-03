@@ -18,11 +18,15 @@ from secondsToStr import *
 from fanRfe import *
 import time
 
+import logging
+LOG_FILENAME = os.getcwd()+'/example.log'
+logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
+
 start=time.clock()
 
 #Initializing
 sTime = dt.datetime(2014,12,15,7,30)        #Scanning start Time
-eTime = dt.datetime(2014,12,15,7,32)         #Scanning end time
+eTime = dt.datetime(2014,12,15,7,31)         #Scanning end time
 radars=['inv']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file

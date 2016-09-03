@@ -10,7 +10,6 @@ Download from git
 git pull origin work-in-progress
 
 Upload to git:
-git add -A #stages All
 git add . #stages new and modified, without deleted
 git add -u #stages modified and deleted, without new
 
@@ -22,7 +21,7 @@ git push origin work-in-progress
 
 Other commands:
 git status
-git rm file	#Delete file or folder
+git rm file	#Delete file or folder (add -r)
 
 git branch branch_name		#Create new branch
 git branch -d branch_name	#Delete local branch

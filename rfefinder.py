@@ -26,15 +26,15 @@ start=time.clock()
 
 #Initializing
 sTime = dt.datetime(2014,12,15,7,30)        #Scanning start Time
-eTime = dt.datetime(2014,12,15,7,31)         #Scanning end time
+eTime = dt.datetime(2014,12,15,7,33)         #Scanning end time
 radars=['inv']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
-SaveXlsx=True      #Save as .xlsx spreadsheet
+SaveXlsx=False      #Save as .xlsx spreadsheet
 SaveNpy=True        #Save as .npy file
 RFEplot=True        #Make RFE plot
-fanPlot=True
+fanPlot=False
 
 timerS=time.clock()
 

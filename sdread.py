@@ -18,7 +18,7 @@ import time
 
 
 #Function for identifying reverse flow events
-def rfeFinder(rad,beam,gate,velocity,fov,timeEvent,rsep,rfe):
+def rfeFinder_old(rad,beam,gate,velocity,fov,timeEvent,rsep,rfe):
     a=100   #Velocity requirements (m/s)
     b=170
     c=170
@@ -39,13 +39,27 @@ def rfeFinder(rad,beam,gate,velocity,fov,timeEvent,rsep,rfe):
                         relVel=abs(velocity[n+1]-velocity[n])
                         rfe=append(rfe,[[rad,beam,gate[n], relVel,radLe,lat,lon,timeEvent]],axis=0)
     return rfe
+    
+#Enhanched Function for identifying reverse flow events
+def rfeFinder(velMatrix):
+    a=100   #Velocity requirements (m/s)
+    b=170
+    c=170
+    
+    [cols,rows]=shape(velMatrix)
+    
+    for i in range(rows):
+        for n in range(cols-3):
+            if (velMatrix[n+1,i]>100 and velMatrix[n,i]<-100) or (velMatrix[n+1,i]<-100 and velMatrix[n,i]>100):
+                if (abs(velMatrix[n,i]-velMatrix[n+1,i])>400):
+                    if (abs(velMatrix[n,i]-velMatrix[n+2,i])>600):
+                        return n,i            #Return index of RFE
+    return None,None
 
 #Function for reading superdarn data and returning rfe matrix
 def sdread(rfe,rad,sTime,eTime):
-    veltime=True   #Plotting of time diagram over velocities
-    vel, t = [], []
-    velC=0              #Total number of data elements
     timerS=time.clock()
+    
    
     #Radar parameters
     channel=None
@@ -61,60 +75,68 @@ def sdread(rfe,rad,sTime,eTime):
                                     bmnum=bmnum,cp=cp,fileType=fileType,
                                     filtered=filtered, src=src)
     
-    myScan = pydarn.sdio.radDataReadAll(myPtr)
+    myScan = pydarn.sdio.radDataReadScan(myPtr)
     
     
     #Iterate thorugh all data from selected time period
-    print 'Radars to analyze: '+ str(len(myScan))
-    for myBeam in myScan:
-        count+=1
-        if (myBeam == None): continue
-        vel.append( myBeam.fit.v )
-        t.append( myBeam.time )
-        if not myBeam.fit.v:
-            print 'empty'
-            continue
-        velC=velC+len(myBeam.fit.v)
+    while (myScan!=None):
+        nbeams=len(myScan)#number of beams          Rows
+        
+        nrangs=myScan[0].prm.nrang#Number of gates  Cols
         
         
-        beam=myBeam.bmnum
-        gate=array(myBeam.fit.slist)
-        velocity=array(myBeam.fit.v)
-        rsep=myBeam.prm.rsep
-        timeEvent=myBeam.time#int(myBeam.time.strftime("%Y%m%d%H%M"))
-        radId=myBeam.stid
         
-        site = pydarn.radar.site(radId=radId, dt=myBeam.time)
-        fov = pydarn.radar.radFov.fov(site=site, rsep=rsep,
-                                          ngates=myBeam.prm.nrang + 1,
-                                          nbeams=site.maxbeam,coords='mag',
-                                          date_time=myBeam.time)
+        velMatrix=zeros((nrangs,nbeams))
         
-        print '...Analyzing radar '+rad+' beam '+str(beam)#Progress
-        print '**Beam ' + str(count) +' out of '+str(len(myScan))+ ' **'+secondsToStr(time.clock()-timerS)
-        rfe=rfeFinder(rad,beam,gate,velocity,fov,timeEvent,rsep,rfe)
-        
-        
+        for n in range(nbeams):  #Iterate through all beams to add velocities
+            beam=myScan[n].bmnum
+            gates=array(myScan[n].fit.slist)
+            #if not myScan[beam].fit.v: print 'empty beam';continue
+            velocity=array(myScan[n].fit.v)
+            
+            for gate in range(len(gates)):
+                velMatrix[gates[gate],beam]=velocity[gate]
     
+        velMatrix[velMatrix>1200]=1200              #High pass filter for noise
+        velMatrix[velMatrix<-1200]=-1200
+    #    plt.imshow(velMatrix,cmap=plt.get_cmap('jet'),interpolation='nearest',aspect='auto')
+    #    plt.colorbar()
+    #    plt.show()
 
+        timeEvent=myScan[0].time#Time for first beam in scan
+        print '...Analyzing radar '+rad+' at time: '+str(timeEvent)
+        
+        gate,beam=rfeFinder(velMatrix)#Finding the actual RFE
+        
+        
+        
+        if gate is None:
+            myScan = pydarn.sdio.radDataReadScan(myPtr)
+            continue#If no RFE go to next scan
     
-    #Plot velocities as function of the time interval
-    if veltime:
-        ax = gca()
-        for i in range(len(t)):
-            if not vel[i]: continue
-            plt.scatter([dates.date2num(t[i])]*len(vel[i]), vel[i], s=1)
-        plt.ylim([-1000, 1000])
-        plt.xlim([dates.date2num(sTime), dates.date2num(eTime)])
-        tloc = dates.MinuteLocator(interval=10)
-        tfmt = dates.DateFormatter('%H:%M')
-        ax.xaxis.set_major_locator(tloc)
-        ax.xaxis.set_major_formatter(tfmt)
-        plt.ylabel('Velocity [m/s]')
-        plt.grid()
-        plt.show()
+        #Finding position and storing RFE data
+        relVel=0
+        gateLe=0
+        
+        rsep=myScan[beam].prm.rsep
+        radLe=gateLe*rsep
+        radId=myScan[beam].stid
+        site = pydarn.radar.site(radId=radId, dt=timeEvent)
+        fov = pydarn.radar.radFov.fov(site=site, rsep=rsep,
+                                          ngates=myScan[beam].prm.nrang + 1,
+                                          nbeams=site.maxbeam,coords='mag',
+                                          date_time=myScan[beam].time)
+        
+        lat=fov.latCenter[beam, gate]                    #Finding coordinates
+        lon=fov.lonCenter[beam, gate]
+
+        rfeElement=array([[rad,beam,gate,relVel,radLe,lat,lon,timeEvent]])
+        rfe=append(rfe,rfeElement,axis=0)
+        
+        myScan = pydarn.sdio.radDataReadScan(myPtr)
+        
+        
     
-    print 'Number of Velocity: ',velC
     print 'Number of RFE: ',len(rfe)-1
 
     return rfe

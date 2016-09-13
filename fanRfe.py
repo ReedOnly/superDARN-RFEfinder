@@ -465,7 +465,7 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     if show:
         myFig.show()
 		
-	myFig.close			#Close figure
+    plot.close(myFig)			#Close figure
 
 
 def overlayFan(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,

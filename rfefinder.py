@@ -18,23 +18,20 @@ from secondsToStr import *
 from fanRfe import *
 import time
 
-import logging
-LOG_FILENAME = os.getcwd()+'/example.log'
-logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
 
 start=time.clock()
 
 #Initializing
 sTime = dt.datetime(2014,12,15,7,30)        #Scanning start Time
-eTime = dt.datetime(2014,12,15,7,33)         #Scanning end time
-radars=['inv']  #'inv','rkn'              #Radars to scan
+eTime = dt.datetime(2014,12,15,7,42)         #Scanning end time
+radars=['cly']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
 SaveXlsx=False      #Save as .xlsx spreadsheet
 SaveNpy=True        #Save as .npy file
 RFEplot=True        #Make RFE plot
-fanPlot=False
+fanPlot=True
 
 timerS=time.clock()
 

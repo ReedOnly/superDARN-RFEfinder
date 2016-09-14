@@ -48,12 +48,16 @@ def rfeFinder(velMatrix):
     
     [cols,rows]=shape(velMatrix)
     
-    for i in range(rows):
+    for i in range(1,rows-1):
         for n in range(cols-3):
-            if (velMatrix[n+1,i]>100 and velMatrix[n,i]<-100) or (velMatrix[n+1,i]<-100 and velMatrix[n,i]>100):
-                if (abs(velMatrix[n,i]-velMatrix[n+1,i])>400):
-                    if (abs(velMatrix[n,i]-velMatrix[n+2,i])>600):
-                        return n,i            #Return index of RFE
+            if (velMatrix[n+2,i]>200 and velMatrix[n,i]<-200) or (velMatrix[n+2,i]<-200 and velMatrix[n,i]>200):
+                if (abs(velMatrix[n,i]-velMatrix[n+1,i])<300):                  #Check for min 2 gate rfe
+                    if (abs(velMatrix[n,i]-velMatrix[n+3,i])>600):              #Check strong gradient drift
+                        if  (abs(velMatrix[n,i]-velMatrix[n,i+1])<300 or \
+                            abs(velMatrix[n,i]-velMatrix[n+1,i+1])<300) and \
+                            (abs(velMatrix[n,i]-velMatrix[n,i-1])<300 or \
+                            abs(velMatrix[n,i]-velMatrix[n+1,i-1])<300):        #Check neighbour beam
+                            return n,i            #Return index of RFE
     return None,None
 
 #Function for reading superdarn data and returning rfe matrix

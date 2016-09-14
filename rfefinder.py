@@ -23,8 +23,8 @@ start=time.clock()
 
 #Initializing
 sTime = dt.datetime(2014,12,15,7,30)        #Scanning start Time
-eTime = dt.datetime(2014,12,15,7,42)         #Scanning end time
-radars=['cly']  #'inv','rkn'              #Radars to scan
+eTime = dt.datetime(2014,12,15,8,00)         #Scanning end time
+radars=['cly','inv']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder

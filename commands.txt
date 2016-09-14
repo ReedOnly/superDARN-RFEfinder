@@ -44,3 +44,9 @@ git config --global http.sslverify false
 git remote set-url origin https://ReedOnly@github.com/ReedOnly/superDARN-RFEfinder.git
 git config --global --unset-all user.name
 git config --global --unset-all user.email
+
+request-pull
+git request-pull 0.5-master https://github.com/vtsuperdarn/davitpy.git master
+git remote add upstream https://github.com/vtsuperdarn/davitpy.git
+git fetch upstream
+git merge upstream/master

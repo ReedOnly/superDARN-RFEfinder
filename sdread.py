@@ -84,15 +84,17 @@ def sdread(rfe,rad,sTime,eTime):
     
     #Iterate thorugh all data from selected time period
     while (myScan!=None):
-        nbeams=len(myScan)#number of beams          Rows
+        timeEvent=myScan[0].time#Time for first beam in scan
+        print '...Analyzing radar '+rad+' at time: '+str(timeEvent)
+        nbeams=max(len(myScan),16)#number of beams          Rows
         
-        nrangs=myScan[0].prm.nrang#Number of gates  Cols
+        nrangs=max(myScan[0].prm.nrang,100)#Number of gates  Cols (Minimum 100x16 matrix)
         
         
         
         velMatrix=zeros((nrangs,nbeams))
         
-        for n in range(nbeams):  #Iterate through all beams to add velocities
+        for n in range(len(myScan)):  #Iterate through all beams to add velocities
             beam=myScan[n].bmnum
             gates=array(myScan[n].fit.slist)
             #if not myScan[beam].fit.v: print 'empty beam';continue
@@ -107,8 +109,6 @@ def sdread(rfe,rad,sTime,eTime):
     #    plt.colorbar()
     #    plt.show()
 
-        timeEvent=myScan[0].time#Time for first beam in scan
-        print '...Analyzing radar '+rad+' at time: '+str(timeEvent)
         
         gate,beam=rfeFinder(velMatrix)#Finding the actual RFE
         

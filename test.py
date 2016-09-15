@@ -21,9 +21,9 @@ a=random.random((10, 10))
 
 
 
-sTime = dt.datetime(2014,12,15,7,30)        #Scanning start Time
-eTime = dt.datetime(2014,12,15,7,42)         #Scanning end time
-rad='cly'
+sTime = dt.datetime(2014,12,15,13,59)        #Scanning start Time
+eTime = dt.datetime(2014,12,15,14,10)         #Scanning end time
+rad='rkn'
 
 
 #Radar parameters
@@ -48,6 +48,7 @@ while(myScan!=None):
     #plt.figure(figsize=(9,9))
     
     nbeams=len(myScan)#number of beams
+    print 'number of beams: '+ str(nbeams)
     
     nrangs=myScan[0].prm.nrang#Number of gates
     
@@ -56,7 +57,9 @@ while(myScan!=None):
     velMatrix=zeros((nrangs,nbeams))
     
     for beam in range(nbeams):  #Iterate through all beams to add velicities
+        print myScan[beam].prm.nrang
         gates=array(myScan[beam].fit.slist)
+        print gates
         #if not myScan[beam].fit.v: print 'empty beam';continue
         velocity=array(myScan[beam].fit.v)
         
@@ -71,3 +74,9 @@ while(myScan!=None):
 
     myScan = pydarn.sdio.radDataReadScan(myPtr)
 
+myPtr = pydarn.sdio.radDataOpen(sTime,rad,eTime=eTime,channel=channel,
+                                bmnum=bmnum,cp=cp,fileType=fileType,
+                                filtered=filtered, src=src)
+
+myScan = pydarn.sdio.radDataReadScan(myPtr)
+print myScan[0].fit.slist

@@ -57,7 +57,14 @@ def rfeFinder(velMatrix):
                             abs(velMatrix[n,i]-velMatrix[n+1,i+1])<300) and \
                             (abs(velMatrix[n,i]-velMatrix[n,i-1])<300 or \
                             abs(velMatrix[n,i]-velMatrix[n+1,i-1])<300):        #Check neighbour beam
-                            return n,i            #Return index of RFE
+                             
+                             if (abs(velMatrix[n,i]-velMatrix[n+2,i+1])>600 or \
+                                abs(velMatrix[n,i]-velMatrix[n+3,i+1])>600) and \
+                                (abs(velMatrix[n,i]-velMatrix[n+2,i-1])>600 or \
+                                abs(velMatrix[n,i]-velMatrix[n+3,i-1])>600):  
+                             
+                             
+                                return n,i            #Return index of RFE
     return None,None
 
 #Function for reading superdarn data and returning rfe matrix
@@ -122,14 +129,14 @@ def sdread(rfe,rad,sTime,eTime):
         relVel=0
         gateLe=0
         
-        rsep=myScan[beam].prm.rsep
+        rsep=myScan[0].prm.rsep
         radLe=gateLe*rsep
-        radId=myScan[beam].stid
+        radId=myScan[0].stid
         site = pydarn.radar.site(radId=radId, dt=timeEvent)
         fov = pydarn.radar.radFov.fov(site=site, rsep=rsep,
-                                          ngates=myScan[beam].prm.nrang + 1,
+                                          ngates=myScan[0].prm.nrang + 1,
                                           nbeams=site.maxbeam,coords='mag',
-                                          date_time=myScan[beam].time)
+                                          date_time=timeEvent)
         
         lat=fov.latCenter[beam, gate]                    #Finding coordinates
         lon=fov.lonCenter[beam, gate]

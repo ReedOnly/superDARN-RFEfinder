@@ -19,12 +19,11 @@ from fanRfe import *
 import time
 
 
-start=time.clock()
 
 #Initializing
-sTime = dt.datetime(2014,12,15,13,50)        #Scanning start Time
-eTime = dt.datetime(2014,12,15,14,20)         #Scanning end time
-radars=['rkn']  #'inv','rkn'              #Radars to scan
+sTime = dt.datetime(2014,12,15,7,30)        #Scanning start Time
+eTime = dt.datetime(2014,12,15,9,00)         #Scanning end time
+radars=['cly']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
@@ -51,6 +50,7 @@ if LoadFile: rfe=load(os.getcwd()+'/Files/'+'2016-08-17-10.31/2014-12-15-0730.np
 if not LoadFile:
     rfe=array([[0,0,0,0,0,0,0,0]])
     for rad in radars:
+        save(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.npy")),rfe)          #Save for every radar in case it stops
         timerSTmp=time.clock()
         rfeTmp=array([[0,0,0,0,0,0,0,0]])
         rfeTmp=sdread(rfeTmp,rad,sTime,eTime)
@@ -88,9 +88,9 @@ if RFEplot:
         #x,y=lon,lat
         m.scatter(x, y, s=80, marker='o', facecolors='none', edgecolors='r', zorder=2)
     
-    pylab.savefig(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.pdf")))
+    pylab.savefig(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.png")))
     print 'Saved rfe plot'
-    plt.show()
+    #plt.show()
     
 
 

@@ -50,3 +50,6 @@ git request-pull 0.5-master https://github.com/vtsuperdarn/davitpy.git master
 git remote add upstream https://github.com/vtsuperdarn/davitpy.git
 git fetch upstream
 git merge upstream/master
+
+other commands
+git reset --hard origin		#To overwrite local changes

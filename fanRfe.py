@@ -210,7 +210,7 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     for i in range(len(myFiles)):
         # read until we reach start time
         allBeams[i] = radDataReadRec(myFiles[i])
-        while (allBeams[i].time < sTime and allBeams[i] is not None):
+        while (allBeams[i] is not None and allBeams[i].time < sTime):
             allBeams[i] = radDataReadRec(myFiles[i])
 
         # check that the file has data in the target interval

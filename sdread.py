@@ -13,7 +13,6 @@ from pylab import gca
 import matplotlib.pyplot as plt
 from matplotlib import *
 from scipy import *
-import pandas as pd
 import time
 
 

@@ -1,4 +1,4 @@
-##SE line 462!!#Kristian Reed 14.08.2016
+##See line 462!!#Kristian Reed 14.08.2016
 
 """The fan module
 

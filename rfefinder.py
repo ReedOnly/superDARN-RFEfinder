@@ -22,16 +22,16 @@ import time
 
 
 #Initializing
-sTime = dt.datetime(2014,12,15,7,30)        #Scanning start Time
-eTime = dt.datetime(2014,12,15,9,00)         #Scanning end time
-radars=['cly']  #'inv','rkn'              #Radars to scan
+sTime = dt.datetime(2014,12,15,9,50)        #Scanning start Time
+eTime = dt.datetime(2014,12,15,10,30)         #Scanning end time
+radars=['inv']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
 SaveXlsx=False      #Save as .xlsx spreadsheet
 SaveNpy=True        #Save as .npy file
 RFEplot=True        #Make RFE plot
-fanPlot=False
+fanPlot=True
 
 timerS=time.clock()
 
@@ -114,10 +114,10 @@ if SaveXlsx:
 #            poesLabel=r"Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]",
 #            overlayBnd=False, show=True, png=False, pdf=False, dpi=500,
 #            tFreqBands=[]):
-if fanPlot and len(rfe)>1:    
+if fanPlot and len(rfe)>0:    
     for i in range(len(rfe)):#len(rfe)
         #i=-5+n
-        print '***Plot ',i+1,' out of ',len(rfe),'   ',secondsToStr(time.clock()-timerS),'***'
+        print '***Plot ',i,' out of ',len(rfe)-1,'   ',secondsToStr(time.clock()-timerS),'***'
         plotFanRfe(rfe[i,6],rfe[i,5],newpath,rfe[i,7],[rfe[i,0]], param='velocity',interval=60, fileType='fitacf',
                                 scale=[-500,500],coords='mag',gsct=False,fill=True,
                                 show=False, png=True,pdf=False,dpi=200)

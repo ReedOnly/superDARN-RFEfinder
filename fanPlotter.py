@@ -31,8 +31,8 @@ timerS=time.clock()
 
 
 #Loading stored file
-filedir=raw_input('Numpy file to load: ')
-rfe=load(os.getcwd()+'/'+filedir)#15dec2014.npy
+#filedir=raw_input('Numpy file to load: ')
+rfe=load(os.getcwd()+'/'+data.npy)#15dec2014.npy
 newpath=os.getcwd()+'/'
 
         
@@ -89,7 +89,7 @@ if SaveXlsx:
 #            tFreqBands=[]):
 if fanPlot and len(rfe)>1:    
     for i in range(len(rfe)):#len(rfe)
-        print '***Plot ',i+1,' out of ',len(rfe),'   ',secondsToStr(time.clock()-timerS),'***'
+        print '***Plot ',i,' out of ',len(rfe),'   ',secondsToStr(time.clock()-timerS),'***'
         plotFanRfe(rfe[i,6],rfe[i,5],newpath,rfe[i,7],[rfe[i,0]], param='velocity',interval=60, fileType='fitacf',
                                 scale=[-500,500],coords='mag',gsct=False,fill=True,
                                 show=False, png=True,pdf=False,dpi=200)

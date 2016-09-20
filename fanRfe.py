@@ -129,8 +129,12 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
         import datetime as dt
         pydarn.plotting.fan.plotFan(dt.datetime(2013,3,16,16,30),['fhe','fhw'],param='power',gsct=True)
         pydarn.plotting.fan.plotFan(dt.datetime(2013,3,16,16,30),['fhe','fhw'],param='power',gsct=True,tFreqBands=[[10000,11000],[]])
-
+    
     """
+    
+    savepath=newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +'.fan.png'
+    if os.path.exists(savepath): return
+
     from davitpy import pydarn
     from davitpy import gme
     import datetime as dt
@@ -275,6 +279,7 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
                           height=10.0**3, lat_0=lat_0, lon_0=lon_0,
                           datetime=sTime)
     x, y = tmpmap(lonFull, latFull)
+    if len(x)==0: return
     minx = x.min() * 1.05     # since we don't want the map to cut off labels
     miny = y.min() * 1.05     # or FOVs of the radars we should alter the
     maxx = x.max() * 1.05     # extrema a bit.
@@ -454,8 +459,8 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     if png is True:
         # if not show:
         #   canvas = FigureCanvasAgg(myFig)
-        myFig.savefig(newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +
-                      '.fan.png', dpi=dpi)
+        savepath=newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +'.fan.png'
+        myFig.savefig(savepath, dpi=dpi)
     if pdf:
         # if not show:
         #   canvas = FigureCanvasAgg(myFig)

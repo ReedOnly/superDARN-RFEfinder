@@ -32,7 +32,7 @@ timerS=time.clock()
 
 #Loading stored file
 #filedir=raw_input('Numpy file to load: ')
-rfe=load(os.getcwd()+'/'+data.npy)#15dec2014.npy
+rfe=load(os.getcwd()+'/data.npy')#15dec2014.npy
 newpath=os.getcwd()+'/'
 
         

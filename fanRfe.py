@@ -133,6 +133,7 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     """
     
     savepath=newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +'.fan.png'
+    import os
     if os.path.exists(savepath): return
 
     from davitpy import pydarn
@@ -469,8 +470,10 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
                       '.fan.pdf')
     if show:
         myFig.show()
-		
-    plot.close(myFig)			#Close figure
+
+    plot.clf()                  #Clear figure
+    plot.close(plot.gcf())			#Close figure
+    
 
 
 def overlayFan(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,

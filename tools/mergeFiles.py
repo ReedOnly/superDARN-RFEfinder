@@ -1,4 +1,6 @@
 #superDARN rfe plotter        Kristian reed 09.08.2016
+
+#Script for cobining two or more .npy rfe lists for making one overview plot
 import matplotlib
 matplotlib.use('Agg') # Must be before importing matplotlib.pyplot or pylab!
 from davitpy import pydarn

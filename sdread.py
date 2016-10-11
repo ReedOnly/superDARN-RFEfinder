@@ -49,18 +49,18 @@ def rfeFinder(velMatrix):
     
     for i in range(1,rows-1):
         for n in range(cols-3):
-            if (velMatrix[n+2,i]>200 and velMatrix[n,i]<-200) or (velMatrix[n+2,i]<-200 and velMatrix[n,i]>200):
-                if (abs(velMatrix[n,i]-velMatrix[n+1,i])<300):                  #Check for min 2 gate rfe
-                    if (abs(velMatrix[n,i]-velMatrix[n+3,i])>600):              #Check strong gradient drift
-                        if  (abs(velMatrix[n,i]-velMatrix[n,i+1])<300 or \
-                            abs(velMatrix[n,i]-velMatrix[n+1,i+1])<300) and \
-                            (abs(velMatrix[n,i]-velMatrix[n,i-1])<300 or \
-                            abs(velMatrix[n,i]-velMatrix[n+1,i-1])<300):        #Check neighbour beam
+            if (velMatrix[n+2,i]>250 and velMatrix[n,i]<-250) or (velMatrix[n+2,i]<-250 and velMatrix[n,i]>250):
+                if (abs(velMatrix[n,i]-velMatrix[n+1,i])<200):                  #Check for min 2 gate rfe
+                    if (abs(velMatrix[n,i]-velMatrix[n+3,i])>500):              #Check strong gradient drift
+                        if  (abs(velMatrix[n,i]-velMatrix[n,i+1])<200 or \
+                            abs(velMatrix[n,i]-velMatrix[n+1,i+1])<200) and \
+                            (abs(velMatrix[n,i]-velMatrix[n,i-1])<200 or \
+                            abs(velMatrix[n,i]-velMatrix[n+1,i-1])<200):        #Check neighbour beam
                              
-                             if (abs(velMatrix[n,i]-velMatrix[n+2,i+1])>600 or \
-                                abs(velMatrix[n,i]-velMatrix[n+3,i+1])>600) and \
-                                (abs(velMatrix[n,i]-velMatrix[n+2,i-1])>600 or \
-                                abs(velMatrix[n,i]-velMatrix[n+3,i-1])>600):  
+                             if (abs(velMatrix[n,i]-velMatrix[n+2,i+1])>500 or \
+                                abs(velMatrix[n,i]-velMatrix[n+3,i+1])>500) and \
+                                (abs(velMatrix[n,i]-velMatrix[n+2,i-1])>500 or \
+                                abs(velMatrix[n,i]-velMatrix[n+3,i-1])>500):  
                              
                              
                                 return n,i            #Return index of RFE

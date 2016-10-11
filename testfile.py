@@ -1,14 +1,14 @@
 from scipy import *
 
-def function():
-    a=None
-    b=None
-    return 0,0
-    return 3,4
-        
-        
-a,b=function()
+a=zeros([3,3])
+
+b=ones([2,3])
 
 print a
 print b
+
+
+c=append(a,b,axis=0)
+print c
+
 

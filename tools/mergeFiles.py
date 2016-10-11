@@ -6,15 +6,17 @@ import davitpy.pydarn.sdio
 from davitpy.pydarn.plotting import *
 from davitpy.utils import *
 
-
-import os, sys
+import os
 sys.path.append('../..')
+sys.path.append('../')
 import datetime as dt
 
 import matplotlib.pyplot as plt
 from matplotlib import *
 from scipy import *
 import pandas as pd
+
+from sdread import *
 from secondsToStr import *
 from fanRfe import *
 import time
@@ -22,25 +24,32 @@ import time
 
 
 
-SaveXlsx=False      #Save as .xlsx spreadsheet
-SaveNpy=False        #Save as .npy file
-RFEplot=False        #Make RFE plot
-fanPlot=True
+SaveXlsx=True      #Save as .xlsx spreadsheet
+SaveNpy=True        #Save as .npy file
+RFEplot=True        #Make RFE plot
 
 timerS=time.clock()
 
+#Make path for storage
+
+newpath=os.getcwd()+'/'+datetime.datetime.now().strftime("%Y-%m-%d-%H.%M/")
+
+if not os.path.exists(newpath):
+	os.makedirs(newpath)
 
 #Loading stored file
-#filedir=raw_input('Numpy file to load: ')
-rfe=load(os.getcwd()+'/data.npy')#15dec2014.npy
-newpath=os.getcwd()+'/'
+rfe1=load(os.getcwd()+'/data1.npy')
+rfe2=load(os.getcwd()+'/data2.npy')
+#rfe3=load(os.getcwd()+'/data1.npy')
 
+
+        
+rfe=append(rfe1,rfe2,axis=0)    #Merge the two lists of rfe together
         
 pandasRfe=pd.DataFrame(rfe,columns=['Site','Beam','Gate','RelVel','RadLength','Lat(mag)','Lon(mag)','Time'])
         
     
 #Output result
-print 'Number of rfe :',len(rfe)
 print pandasRfe[['Time','Site','Beam','Gate','RelVel','RadLength']]
 
 
@@ -62,7 +71,7 @@ if RFEplot:
         #x,y=lon,lat
         m.scatter(x, y, s=80, marker='o', facecolors='none', edgecolors='r', zorder=2)
     
-    pylab.savefig(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.png")))
+    pylab.savefig(newpath+str(rfe[0,7].strftime("%Y-%m-%d-%H.png")))
     print 'Saved rfe plot'
     #plt.show()
     
@@ -70,32 +79,20 @@ if RFEplot:
 
 #Produce .npy file
 if SaveNpy:
-    save(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.npy")),rfe)
+    save(newpath+str(rfe[0,7].strftime("%Y-%m-%d-%H%M.npy")),rfe)
     print 'Saved .npy file'
     
 #Produce .xlsx file
 if SaveXlsx:
-    pandasRfe.to_excel(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.xlsx")))
+    pandasRfe.to_excel(newpath+str(rfe[0,7].strftime("%Y-%m-%d-%H.xlsx")))
     print 'Saved .xlsx file'
 
 
-#plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param='velocity',
-#            filtered=False, scale=[], channel=None, coords='geo',
-#            colors='lasse', gsct=False, fov=True, edgeColors='face',
-#            lowGray=False, fill=True, velscl=1000., legend=True,
-#            overlayPoes=False, poesparam='ted', poesMin=-3., poesMax=0.5,
-#            poesLabel=r"Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]",
-#            overlayBnd=False, show=True, png=False, pdf=False, dpi=500,
-#            tFreqBands=[]):
-if fanPlot and len(rfe)>1:    
-    for i in range(len(rfe)):#len(rfe)
-        print '***Plot ',i,' out of ',len(rfe),'   ',secondsToStr(time.clock()-timerS),'***'
-        plotFanRfe(rfe[i,6],rfe[i,5],newpath,rfe[i,7],[rfe[i,0]], param='velocity',interval=60, fileType='fitacf',
-                                scale=[-500,500],coords='mag',gsct=False,fill=True,
-                                show=False, png=True,pdf=False,dpi=200)
-    print 'Saved fan plot figures'
+
+
     
 timerE=time.clock()
 print 'Total time used: '+secondsToStr(timerE-timerS)
     
     
+#shalala

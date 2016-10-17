@@ -91,6 +91,7 @@ if SaveXlsx:
 #            tFreqBands=[]):
 if fanPlot and len(rfe)>1:    
     for i in range(len(rfe)):#len(rfe)
+	#if i==71: continue	#Remove rfe if error while plotting
         print '***Plot ',i,' out of ',len(rfe),'   ',secondsToStr(time.clock()-timerS),'***'
         plotFanRfe(rfe[i,6],rfe[i,5],newpath,rfe[i,7],[rfe[i,0]], param='velocity',interval=60, fileType='fitacf',
                                 scale=[-500,500],coords='mag',gsct=False,fill=True,

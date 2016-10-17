@@ -7,8 +7,10 @@ git clone --branch work-in-progress https://github.com/ReedOnly/superDARN-RFEfin
 
 
 Download from git
-git pull origin work-in-progress
+git fetch
+git merge
 
+git pull origin work-in-progress
 Upload to git:
 git add . #stages new and modified, without deleted
 git add -u #stages modified and deleted, without new

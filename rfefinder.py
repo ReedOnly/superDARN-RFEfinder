@@ -22,8 +22,8 @@ import time
 
 
 #Initializing
-sTime = dt.datetime(2014,12,15,0,00)        #Scanning start Time
-eTime = dt.datetime(2014,12,22,23,58)         #Scanning end time
+sTime = dt.datetime(2014,12,15,0,0)        #Scanning start Time
+eTime = dt.datetime(2014,12,15,6,0)         #Scanning end time
 radars=['inv']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file
@@ -51,7 +51,7 @@ if LoadFile: rfe=load(os.getcwd()+'/Files/'+'2016-08-17-10.31/2014-12-15-0730.np
 if not LoadFile:
     rfe=array([[0,0,0,0,0,0,0,0]])
     for rad in radars:
-        save(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.npy")),rfe)          #Save for every radar in case it stops
+        save(newpath+'data.npy'),rfe)          #Save for every radar in case it stops
         timerSTmp=time.clock()
         rfeTmp=array([[0,0,0,0,0,0,0,0]])
         rfeTmp=sdread(rfeTmp,rad,sTime,eTime)

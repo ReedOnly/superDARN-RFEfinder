@@ -140,7 +140,13 @@ def sdread(rfe,rad,sTime,eTime):
         lat=fov.latCenter[beam, gate]                    #Finding coordinates
         lon=fov.lonCenter[beam, gate]
 
-        rfeElement=array([[rad,beam,gate,relVel,radLe,lat,lon,timeEvent]])
+        lonMlt, latMlt = coord_conv(lon, lat, 'mag', 'mlt',
+                                    altitude=700.,
+                                    date_time=timeEvent)
+        lonMlt *= 24./360.      #Convert from degrees to hours
+        lonMlt %= 24.           #Convert to 24 hr
+        
+        rfeElement=array([[rad,beam,gate,relVel,lonMlt,lat,lon,timeEvent]])
         rfe=append(rfe,rfeElement,axis=0)
         
         myScan = pydarn.sdio.radDataReadScan(myPtr)

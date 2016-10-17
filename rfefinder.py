@@ -23,8 +23,8 @@ import time
 
 #Initializing
 sTime = dt.datetime(2014,12,15,0,0)        #Scanning start Time
-eTime = dt.datetime(2014,12,15,6,0)         #Scanning end time
-radars=['inv']  #'inv','rkn'              #Radars to scan
+eTime = dt.datetime(2014,12,18,23,58)         #Scanning end time
+radars=['inv','cly','rkn']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
@@ -51,7 +51,7 @@ if LoadFile: rfe=load(os.getcwd()+'/Files/'+'2016-08-17-10.31/2014-12-15-0730.np
 if not LoadFile:
     rfe=array([[0,0,0,0,0,0,0,0]])
     for rad in radars:
-        save(newpath+'data.npy'),rfe)          #Save for every radar in case it stops
+        save(newpath+'data.npy',rfe)          #Save for every radar in case it stops
         timerSTmp=time.clock()
         rfeTmp=array([[0,0,0,0,0,0,0,0]])
         rfeTmp=sdread(rfeTmp,rad,sTime,eTime)
@@ -63,11 +63,11 @@ if not LoadFile:
     if len(rfe)>1:
         rfe = delete(rfe, 0, axis=0)
         
-pandasRfe=pd.DataFrame(rfe,columns=['Site','Beam','Gate','RelVel','RadLength','Lat(mag)','Lon(mag)','Time'])
+pandasRfe=pd.DataFrame(rfe,columns=['Site','Beam','Gate','RelVel','MLT','Lat(mag)','Lon(mag)','Time'])
         
     
 #Output result
-print pandasRfe[['Time','Site','Beam','Gate','RelVel','RadLength']]
+print pandasRfe[['Time','Site','Beam','Gate','RelVel','MLT']]
 print 'Time used: '+secondsToStr(time.clock()-timerS)
 
 
@@ -97,7 +97,7 @@ if RFEplot:
 
 #Produce .npy file
 if SaveNpy:
-    save(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.npy")),rfe)
+    save(newpath+'data.npy',rfe)
     print 'Saved .npy file'
     
 #Produce .xlsx file

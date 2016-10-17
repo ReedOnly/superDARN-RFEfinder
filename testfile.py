@@ -1,14 +1,11 @@
 from scipy import *
+from davitpy.utils import *
+import datetime as dt
 
-a=zeros([3,3])
-
-b=ones([2,3])
-
-print a
-print b
-
-
-c=append(a,b,axis=0)
-print c
-
-
+lon=-45.6
+lat=79.2
+lonMlt, latMlt = coord_conv(lon, lat, 'mag', 'mlt',
+                                    altitude=300.,
+                                    date_time=dt.datetime(2012,3,12,0,56))
+print lonMlt
+print latMlt

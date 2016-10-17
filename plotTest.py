@@ -11,7 +11,7 @@ from davitpy.utils import *
 
 from fanRfe import *
 
-sTime = dt.datetime(2014,12,15,10,1,0,2000)  
+sTime = dt.datetime(2014, 12, 15, 18, 23, 0, 48000)  
 rad=['inv']
 
 
@@ -22,8 +22,10 @@ pydarn.plotting.fan.plotFan(sTime,rad, param='velocity',interval=60, fileType='f
 
 
 plt.figure()
-plotFanRfe(-71,87,os.getcwd(),sTime,rad, param='velocity',interval=60, fileType='fitacf',
+plotFanRfe(-31,76,os.getcwd(),sTime,rad, param='velocity',interval=60, fileType='fitacf',
                                 scale=[-500,500],coords='mag',gsct=False,fill=True,
-                                show=True, png=True,pdf=False,dpi=200)
+                                show=False, png=True,pdf=True,dpi=200)
 
-a=raw_input("Press Enter to continue...")
+#plt.show()
+
+#a=raw_input("Press Enter to continue...")

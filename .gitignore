@@ -10,4 +10,6 @@ sdread.pyc
 
 files/**
 sample/**
-tools/**
+tools/data1.npy
+tools/data2.npy
+omni/**

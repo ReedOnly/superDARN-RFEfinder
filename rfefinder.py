@@ -15,7 +15,7 @@ from scipy import *
 import pandas as pd
 
 from sdread import *
-from secondsToStr import *
+from tools import *
 from fanRfe import *
 import time
 

@@ -23,12 +23,12 @@ import time
 
 #Initializing
 sTime = dt.datetime(2014,12,15,0,0)        #Scanning start Time
-eTime = dt.datetime(2014,12,18,23,58)         #Scanning end time
-radars=['inv','cly','rkn']  #'inv','rkn'              #Radars to scan
+eTime = dt.datetime(2014,12,15,1,0)         #Scanning end time
+radars=['inv']  #'inv','rkn'              #Radars to scan
 
 LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
-SaveXlsx=False      #Save as .xlsx spreadsheet
+SaveXlsx=True     #Save as .xlsx spreadsheet
 SaveNpy=True        #Save as .npy file
 RFEplot=True        #Make RFE plot
 fanPlot=True
@@ -63,11 +63,11 @@ if not LoadFile:
     if len(rfe)>1:
         rfe = delete(rfe, 0, axis=0)
         
-pandasRfe=pd.DataFrame(rfe,columns=['Site','Beam','Gate','RelVel','MLT','Lat(mag)','Lon(mag)','Time'])
+pandasRfe=pd.DataFrame(rfe,columns=['Site','Beam','Gate','Lon(MLT)','MLT','Lat(mag)','Lon(mag)','Time'])
         
     
 #Output result
-print pandasRfe[['Time','Site','Beam','Gate','RelVel','MLT']]
+print pandasRfe[['Time','Site','Beam','Gate','MLT']]
 print 'Time used: '+secondsToStr(time.clock()-timerS)
 
 
@@ -118,8 +118,8 @@ if fanPlot and len(rfe)>0:
     for i in range(len(rfe)):#len(rfe)
         #i=-5+n
         print '***Plot ',i,' out of ',len(rfe)-1,'   ',secondsToStr(time.clock()-timerS),'***'
-        plotFanRfe(rfe[i,6],rfe[i,5],newpath,rfe[i,7],[rfe[i,0]], param='velocity',interval=60, fileType='fitacf',
-                                scale=[-500,500],coords='mag',gsct=False,fill=True,
+        plotFanRfe(rfe[i,3],rfe[i,5],newpath,rfe[i,7],[rfe[i,0]], param='velocity',interval=60, fileType='fitacf',
+                                scale=[-500,500],coords='mlt',gsct=False,fill=True,
                                 show=False, png=True,pdf=False,dpi=200)
         print 'time used: '+ secondsToStr(time.clock()-timerS)
     print 'Saved fan plot figures'

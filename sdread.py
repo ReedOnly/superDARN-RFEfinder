@@ -6,7 +6,7 @@ import davitpy.pydarn.sdio
 from davitpy.pydarn.plotting import *
 from davitpy.utils import *
 
-from secondsToStr import *
+from tools import *
 
 import datetime as dt
 from pylab import gca
@@ -68,7 +68,6 @@ def rfeFinder(velMatrix):
 
 #Function for reading superdarn data and returning rfe matrix
 def sdread(rfe,rad,sTime,eTime):
-    timerS=time.clock()
     
    
     #Radar parameters
@@ -124,29 +123,36 @@ def sdread(rfe,rad,sTime,eTime):
             myScan = pydarn.sdio.radDataReadScan(myPtr)
             continue#If no RFE go to next scan
     
-        #Finding position and storing RFE data
-        relVel=0
-        gateLe=0
         
+        #Finding mag position
         rsep=myScan[0].prm.rsep
-        radLe=gateLe*rsep
         radId=myScan[0].stid
         site = pydarn.radar.site(radId=radId, dt=timeEvent)
         fov = pydarn.radar.radFov.fov(site=site, rsep=rsep,
                                           ngates=myScan[0].prm.nrang + 1,
                                           nbeams=site.maxbeam,coords='mag',
                                           date_time=timeEvent)
-        
-        lat=fov.latCenter[beam, gate]                    #Finding coordinates
+        lat=fov.latCenter[beam, gate]
         lon=fov.lonCenter[beam, gate]
 
+
+        #Calculate MLT
         lonMlt, latMlt = coord_conv(lon, lat, 'mag', 'mlt',
                                     altitude=700.,
                                     date_time=timeEvent)
         MLT=lonMlt * 24./360.      #Convert from degrees to hours
         MLT %= 24.           #Convert to 24 hr
         
-        rfeElement=array([[rad,beam,gate,lonMlt,MLT,lat,lon,timeEvent]])
+        #Get IMF magnetic field from database
+        year=timeEvent.year
+        day=timeEvent.timetuple().tm_yday
+        hour=timeEvent.hour
+        minute=timeEvent.minute
+        imf=get_imf(year,day,hour,minute)
+        #Remove fault values
+        if abs(imf[0])>999: imf=(0,0,0)
+
+        rfeElement=array([[rad,beam,gate,lonMlt,MLT,lat,lon,imf,timeEvent]])
         rfe=append(rfe,rfeElement,axis=0)
         
         myScan = pydarn.sdio.radDataReadScan(myPtr)

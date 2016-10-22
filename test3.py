@@ -3,6 +3,7 @@ import sqlite3 as lite
 import sys
 import time
 import random
+import os
 
 
 def get_imf(year,day,hour,minute):
@@ -13,9 +14,7 @@ def get_imf(year,day,hour,minute):
     minute: (int)
     
     Returns:
-    imf[0]:Bx(float)
-    imf[1]:By(float)
-    imf[2]Bz(float)"""
+    imf[Bx,By,Bz]:(float)"""
     
 
     #Connect to IMF database
@@ -29,22 +28,23 @@ def get_imf(year,day,hour,minute):
                     {"year":year,"day":day,"hour":hour,"minute":minute})
         imf= cur.fetchone()
         
-    return imf[0],imf[1],imf[2]
+    return imf
     
 
 
 
-timeS=time.clock()
+
 for n in range(10):
+    timeS=time.clock()
     y=random.randint(2012,2015)
     d=random.randint(1,365)
     h=random.randint(0,23)
     m=random.randint(0,59)
-    Bx,By,Bz=get_imf(y,d,h,m)
-    print Bz
+    imf=get_imf(y,d,h,m)
+    print imf[2]
 
 timeEl=time.clock()-timeS
 print "Time used: %s"%timeEl
 
 
-sTime.timetuple().tm_yday
+#timeS.timetuple().tm_yday

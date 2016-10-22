@@ -131,7 +131,6 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
         pydarn.plotting.fan.plotFan(dt.datetime(2013,3,16,16,30),['fhe','fhw'],param='power',gsct=True,tFreqBands=[[10000,11000],[]])
     
     """
-    
     savepath=newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +'.fan.png'
     import os
     if os.path.exists(savepath): return         #Skip if current plot already exists

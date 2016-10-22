@@ -1,7 +1,8 @@
 #Kristian Reed 22.10.2016
 #Various fuctions nessecary for things to work
 
-
+import sqlite3 as lite
+import os
 
 def secondsToStr(t):
 #return seconds to hh:mm:ss.sss string
@@ -35,4 +36,4 @@ def get_imf(year,day,hour,minute):
                     {"year":year,"day":day,"hour":hour,"minute":minute})
         imf= cur.fetchone()
         
-    return imf[0],imf[1],imf[2]
+    return imf

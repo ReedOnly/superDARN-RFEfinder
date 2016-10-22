@@ -1,13 +1,10 @@
-import matplotlib
-matplotlib.use('Agg') # Must be before importing matplotlib.pyplot or pylab!
-
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib import gridspec
 import os
 
 
-def mltplot(mlat,mlt):
+def mltplot(newpath,sTime,eTime,radars,mlat,mlt):
     #http://stackoverflow.com/questions/36061537/polar-plots-with-magnetic-local-time0-23-as-the-azimuth-against-magnetic-latit
     # set up random data between 0 and 90
     
@@ -53,21 +50,20 @@ def mltplot(mlat,mlt):
                         for xlabel in np.arange(0.0,24.0,(24.0 / len(fig1.get_xticklabels())))])
     
     fig1.grid(True)
-    #fig1.set_title('Polar MLT distribution')
     
     fig2=plt.subplot(gs[1])
     plt.scatter(mlt,mlat,color='r', linewidth=0.1)
     plt.axis([0, 24, 70, 90])
     plt.xlabel('Magnetic local time')
     plt.ylabel('Magnetic latitude')
+    plt.title('Polar MLT distribution')
     fig2.grid(True)
-    fig2.set_title('Polar MLT distribution')
     
     plt.show()
-    fig.savefig(newpath+str(sTime.strftime("%Y-%m-%d-%H%MPolar.png")),dpi=500)
+    fig.savefig(newpath+"/MLTpolar.png",dpi=500)
     
 
-mlat=array(rfe[:,5],dtype=float)
-mlt=array(rfe[:,4],dtype=float)
-mltplot(mlat,mlt)
+#mlat=array(rfe[:,5],dtype=float)
+#mlt=array(rfe[:,4],dtype=float)
+#mltplot(mlat,mlt)
 

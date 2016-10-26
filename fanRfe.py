@@ -28,6 +28,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from mpl_toolkits.basemap import Basemap, pyproj
 from davitpy.utils.timeUtils import *
 from davitpy.pydarn.sdio.radDataRead import *
+import davitpy.pydarn.plotting.plotMapGrd
 import logging
 
 
@@ -299,12 +300,16 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     myFig = plot.figure(figsize=(12, 8))
 
     # draw the actual map we want
-    myMap = utils.mapObj(coords=coords, projection='stere', lat_0=lat_0,
+    myMap= utils.mapObj(coords=coords, projection='stere', lat_0=lat_0,
                          lon_0=lon_0, llcrnrlon=llcrnrlon, llcrnrlat=llcrnrlat,
                          urcrnrlon=urcrnrlon, urcrnrlat=urcrnrlat,
-                         coastLineWidth=0.5, coastLineColor='k',
-                         fillOceans='w', fillContinents='w', fillLakes='w',
                          datetime=sTime)
+    #coastLineWidth=0.5, coastLineColor='k',
+                         #fillOceans='w', fillContinents='w', fillLakes='w',
+    
+    #myMap = utils.mapObj(boundinglat=70.,gridLabels=True, coords='mlt',datetime=sTime)
+    
+    
     # overlay fields of view, if desired
     if(fov == 1):
         for i, r in enumerate(rad):
@@ -454,12 +459,20 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     x,y=myMap(lon,lat)
     #x,y=lon,lat
     myMap.scatter(x, y, s=800, marker='o', facecolors='None', edgecolors='r',zorder=10)
+    
+    
+    #Overlaying convection plot
+    ax = myFig.add_subplot(111)
+    mapDatObj = davitpy.pydarn.plotting.plotMapGrd.MapConv(sTime, myMap, ax)
+    #mapDatObj.overlayMapFitVel()
+    mapDatObj.overlayCnvCntrs()
 
     # handle the outputs
     if png is True:
         # if not show:
         #   canvas = FigureCanvasAgg(myFig)
         savepath=newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +'.fan.png'
+        print savepath
         myFig.savefig(savepath, dpi=dpi)
     if pdf:
         # if not show:
@@ -470,8 +483,10 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     if show:
         myFig.show()
 
-    plot.clf()                  #Clear figure
-    plot.close(plot.gcf())			#Close figure
+#    plot.clf()                  #Clear figure
+#    plot.close(plot.gcf())			#Close figure
+    
+
     
 
 

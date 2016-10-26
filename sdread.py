@@ -55,7 +55,7 @@ def rfeFinder(velMatrix):
                         if  (abs(velMatrix[n,i]-velMatrix[n,i+1])<200 or \
                             abs(velMatrix[n,i]-velMatrix[n+1,i+1])<200) and \
                             (abs(velMatrix[n,i]-velMatrix[n,i-1])<200 or \
-                            abs(velMatrix[n,i]-velMatrix[n+1,i-1])<200):        #Check neighbour beam
+                            abs(velMatrix[n,i]-velMatrix[n+1,i-1])<200):        #Check 2 neighbour beam
                              
                              if (abs(velMatrix[n,i]-velMatrix[n+2,i+1])>500 or \
                                 abs(velMatrix[n,i]-velMatrix[n+3,i+1])>500) and \

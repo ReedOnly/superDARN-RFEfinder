@@ -9,6 +9,7 @@ from davitpy.pydarn.plotting import *
 from davitpy.utils import *
 
 import os
+import sys
 sys.path.append('../..')
 sys.path.append('../')
 import datetime as dt

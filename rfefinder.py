@@ -112,7 +112,7 @@ if SaveXlsx:
     print 'Saved .xlsx file'
 
 
-#plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param='velocity',
+#plotFanRfe(lon,lat,newpath,imf,sTime, rad, interval=60, fileType='fitex', param='velocity',
 #            filtered=False, scale=[], channel=None, coords='geo',
 #            colors='lasse', gsct=False, fov=True, edgeColors='face',
 #            lowGray=False, fill=True, velscl=1000., legend=True,
@@ -124,8 +124,8 @@ if fanPlot and len(rfe)>1:
     for i in range(len(rfe)):#len(rfe)
         #i=-5+n
         print '***Plot ',i,' out of ',len(rfe)-1,'   ',secondsToStr(time.clock()-timerS),'***'
-        plotFanRfe(rfe[i,3],rfe[i,5],newpath,rfe[i,8],[rfe[i,0]], param='velocity',interval=60, fileType='fitacf',
-                                scale=[-500,500],coords='mlt',gsct=False,fill=True,
+        plotFanRfe(rfe[i,3],rfe[i,5],newpath,rfe[i,7],rfe[i,8],[rfe[i,0]], param='velocity',interval=60, fileType='fitex',
+                                scale=[-500,500],coords='mlt',gsct=True,fill=True,overlayPoes=False,
                                 show=False, png=True,pdf=False,dpi=200)
         print 'time used: '+ secondsToStr(time.clock()-timerS)
     print 'Saved fan plot figures'

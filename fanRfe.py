@@ -32,7 +32,7 @@ import davitpy.pydarn.plotting.plotMapGrd
 import logging
 
 
-def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param='velocity',
+def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', param='velocity',
             filtered=False, scale=[], channel=None, coords='geo',
             colors='lasse', gsct=False, fov=True, edgeColors='face',
             lowGray=False, fill=True, velscl=1000., legend=True,
@@ -430,11 +430,17 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     # label with frequency bands
     tx4 = myFig.text(bbox.x1 + .02, bbox.y1, 'Frequency filters:', ha='right',
                      size=8, weight=550)
+    
     for i in range(len(rad)):
         myFig.text(bbox.x1 + .02, bbox.y1 - ((i + 1) * .015), rad[i] + ': ' +
                    str(tbands[i][0] / 1e3) + ' - ' + str(tbands[i][1] / 1e3) +
                    ' MHz', ha='right', size=8, weight=550)
-
+    
+        #Add magnetometer data
+    tx5 = myFig.text(bbox.x1 +0.02, bbox.y1-0.04, 'OMNI By: '+str(imf[1])+' nT', ha='right',
+                     size=11, weight=450)
+    tx6 = myFig.text(bbox.x1 +0.02, bbox.y1-0.06, 'OMNI Bz: '+str(imf[2])+' nT', ha='right',
+                     size=11, weight=450)
     if(overlayPoes):
         pcols = gme.sat.poes.overlayPoesTed(myMap, myFig.gca(), cTime,
                                             param=poesparam, scMin=poesMin,

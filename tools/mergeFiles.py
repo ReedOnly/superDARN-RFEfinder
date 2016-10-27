@@ -61,6 +61,7 @@ print pandasRfe[['Time','Site','Beam','Gate','RelVel','RadLength']]
 #Creating map with RFE
 if RFEplot:
     plt.figure(figsize=(9,9))
+    plt.title(str(radars)+' from '+sTime.strftime("%Y.%m.%d %H:%M")+' until '+ eTime.strftime("%H:%M UTC"),fontsize="x-large")
     width = 111e3*60
     m = plotUtils.mapObj(width=width, height=width, lat_0=90., lon_0=60, coords='mag')
     # Plotting some radars
@@ -72,11 +73,16 @@ if RFEplot:
         #Coordinates in map projection
         x,y=m(rfe[i,6],rfe[i,5])
         #x,y=lon,lat
-        m.scatter(x, y, s=80, marker='o', facecolors='none', edgecolors='r', zorder=2)
+        m.scatter(x, y, s=50, marker='o', facecolors='none', edgecolors='r', zorder=2)
     
-    pylab.savefig(newpath+str(rfe[0,7].strftime("%Y-%m-%d-%H.png")))
+    pylab.savefig(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.png")))
     print 'Saved rfe plot'
     #plt.show()
+    
+    #Make MLT plot
+    mlat=array(rfe[:,5],dtype=float)
+    mlt=array(rfe[:,4],dtype=float)
+    mltplot(newpath,sTime,eTime,radars,mlat,mlt)
     
 
 

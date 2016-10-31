@@ -300,12 +300,15 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
     myFig = plot.figure(figsize=(12, 8))
 
     # draw the actual map we want
-    myMap= utils.mapObj(coords=coords, projection='stere', lat_0=lat_0,
-                         lon_0=lon_0, llcrnrlon=llcrnrlon, llcrnrlat=llcrnrlat,
-                         urcrnrlon=urcrnrlon, urcrnrlat=urcrnrlat,
-                         datetime=sTime)
+    #myMap= utils.mapObj(coords=coords, projection='stere', lat_0=lat_0,
+#                         lon_0=lon_0, llcrnrlon=llcrnrlon, llcrnrlat=llcrnrlat,
+#                         urcrnrlon=urcrnrlon, urcrnrlat=urcrnrlat,
+#                         datetime=sTime)
     #coastLineWidth=0.5, coastLineColor='k',
                          #fillOceans='w', fillContinents='w', fillLakes='w',
+            
+    width2 = 111e3*80
+    myMap = utils.mapObj(boundinglat=65., lon_0=270, coords='mlt',datetime=sTime)
     
     #myMap = utils.mapObj(boundinglat=70.,gridLabels=True, coords='mlt',datetime=sTime)
     

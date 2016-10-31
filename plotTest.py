@@ -15,29 +15,34 @@ from tools import *
 import davitpy.pydarn.plotting.plotMapGrd
 import matplotlib.cm as cm
 
-sTime = dt.datetime(2014, 12, 18, 0, 38)  
-rad=['inv']
-
-year=sTime.year
-day=sTime.timetuple().tm_yday
-hour=sTime.hour
-minute=sTime.minute
-imf=get_imf(year,day,hour,minute)
-
+newpath=os.getcwd()+'/files/'+datetime.datetime.now().strftime("%Y-%m-%d-%H.%M/")
+if not os.path.exists(newpath):
+	os.makedirs(newpath)
+ 
+for t in range(17,23):
+    sTime = dt.datetime(2014, 12, 16, 21, t)  
+    rad=['inv']
     
-#pydarn.plotting.fan.plotFan(sTime,rad, param='velocity',interval=60, fileType='fitacf',
-#                        scale=[-500,500],coords='mag',gsct=False,fill=True,
-#                        show=False, png=True,pdf=False,dpi=200)
-
-
-plotFanRfe(-31,76,os.getcwd()+'/',imf,sTime,rad, param='velocity',interval=60, fileType='fitex',
-            filtered=False, scale=[], channel=None, coords='mlt',
-            colors='lasse', gsct=True, fov=True, edgeColors='face',
-            lowGray=False, fill=True, velscl=1000., legend=True,
-            overlayPoes=False, poesparam='ted', poesMin=-3., poesMax=0.5,
-            poesLabel=r"Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]",
-            overlayBnd=False, show=True, png=False, pdf=False, dpi=400,
-            tFreqBands=[])
+    year=sTime.year
+    day=sTime.timetuple().tm_yday
+    hour=sTime.hour
+    minute=sTime.minute
+    imf=get_imf(year,day,hour,minute)
+    
+        
+    #pydarn.plotting.fan.plotFan(sTime,rad, param='velocity',interval=60, fileType='fitacf',
+    #                        scale=[-500,500],coords='mag',gsct=False,fill=True,
+    #                        show=False, png=True,pdf=False,dpi=200)
+    
+    
+    plotFanRfe(0,0,newpath,imf,sTime,rad, param='velocity',interval=60, fileType='fitacf',
+                filtered=False, scale=[-500, 500], channel=None, coords='mlt',
+                colors='lasse', gsct=True, fov=True, edgeColors='face',
+                lowGray=False, fill=True, velscl=1000., legend=True,
+                overlayPoes=False, poesparam='ted', poesMin=-3., poesMax=0.5,
+                poesLabel=r"Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]",
+                overlayBnd=False, show=True, png=True, pdf=False, dpi=200,
+                tFreqBands=[])
 
 
 

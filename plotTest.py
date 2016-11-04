@@ -19,30 +19,60 @@ newpath=os.getcwd()+'/files/'+datetime.datetime.now().strftime("%Y-%m-%d-%H.%M/"
 if not os.path.exists(newpath):
 	os.makedirs(newpath)
  
-for t in range(17,23):
-    sTime = dt.datetime(2014, 12, 16, 21, t)  
-    rad=['inv']
-    
-    year=sTime.year
-    day=sTime.timetuple().tm_yday
-    hour=sTime.hour
-    minute=sTime.minute
-    imf=get_imf(year,day,hour,minute)
-    
+ 
+ 
+"""
+     ['cly',dt.datetime(2014, 12, 18, 16, 58)],
+     ['cly',dt.datetime(2014, 12, 20, 23, 44)],
+     ['cly',dt.datetime(2014, 12, 21, 20, 25)],
+     ['inv',dt.datetime(2014, 12, 16, 21, 20)],
+     ['inv',dt.datetime(2014, 12, 16, 00, 38)],
+     ['rkn',dt.datetime(2014, 12, 21, 17, 31)],
+"""
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+rfe=[['rkn',dt.datetime(2014, 12, 19, 17, 16)]]
+      
+
+for n in range(len(rfe)):
+    element=rfe[n]      
+    sTime = element[1]
+    rad=[element[0]]
+    for t in range(sTime.minute-1,sTime.minute+1):
         
-    #pydarn.plotting.fan.plotFan(sTime,rad, param='velocity',interval=60, fileType='fitacf',
-    #                        scale=[-500,500],coords='mag',gsct=False,fill=True,
-    #                        show=False, png=True,pdf=False,dpi=200)
-    
-    
-    plotFanRfe(0,0,newpath,imf,sTime,rad, param='velocity',interval=60, fileType='fitacf',
-                filtered=False, scale=[-500, 500], channel=None, coords='mlt',
-                colors='lasse', gsct=True, fov=True, edgeColors='face',
-                lowGray=False, fill=True, velscl=1000., legend=True,
-                overlayPoes=False, poesparam='ted', poesMin=-3., poesMax=0.5,
-                poesLabel=r"Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]",
-                overlayBnd=False, show=True, png=True, pdf=False, dpi=200,
-                tFreqBands=[])
+        if t >59:
+            sTime=sTime.replace(minute=t-60)
+            sTime=sTime.replace(hour=sTime.hour+1)
+        else:
+            sTime=sTime.replace(minute=t)
+        
+        year=sTime.year
+        day=sTime.timetuple().tm_yday
+        hour=sTime.hour
+        minute=sTime.minute
+        imf=get_imf(year,day,hour,minute)
+        
+            
+        #pydarn.plotting.fan.plotFan(sTime,rad, param='velocity',interval=60, fileType='fitacf',
+        #                        scale=[-500,500],coords='mag',gsct=False,fill=True,
+        #                        show=False, png=True,pdf=False,dpi=200)
+        
+        
+        plotFanRfe(0,0,newpath,imf,sTime,rad, param='velocity',interval=60, fileType='fitacf',
+                    filtered=False, scale=[-500, 500], channel=None, coords='mlt',
+                    colors='lasse', gsct=True, fov=True, edgeColors='face',
+                    lowGray=False, fill=True, velscl=1000., legend=True,
+                    overlayPoes=False, poesparam='ted', poesMin=-3., poesMax=0.5,
+                    poesLabel=r"Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]",
+                    overlayBnd=False, show=True, png=True, pdf=False, dpi=200,
+                    tFreqBands=[])
 
 
 

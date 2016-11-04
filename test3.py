@@ -27,8 +27,8 @@ with con:
     hwd= cur.fetchall()
     
 
-    
-
+for n in range(len(hwd)):
+    print hwd[n]
 
 
 

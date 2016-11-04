@@ -151,6 +151,9 @@ def sdread(rfe,rad,sTime,eTime):
         imf=get_imf(year,day,hour,minute)
         #Remove fault values
         if abs(imf[0])>999: imf=(0,0,0)
+        
+        #Transmitter frequez
+        tfreq=myScan[0].prm.tfreq
 
         rfeElement=array([[rad,beam,gate,lonMlt,MLT,lat,lon,imf,timeEvent]])
         rfe=append(rfe,rfeElement,axis=0)

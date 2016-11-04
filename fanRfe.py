@@ -217,6 +217,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
         allBeams[i] = radDataReadRec(myFiles[i])
         while (allBeams[i] is not None and allBeams[i].time < sTime):
             allBeams[i] = radDataReadRec(myFiles[i])
+            
 
         # check that the file has data in the target interval
         if(allBeams[i] is None):
@@ -248,6 +249,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
         oldCpids.append(allBeams[i].cp)
 
         k = allBeams[i].prm.nrang
+        tfreq=allBeams[i].prm.tfreq
         b = 0
         latC.append(myFov.latFull[b][k])
         lonC.append(myFov.lonFull[b][k])
@@ -431,12 +433,13 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
     tx3 = myFig.text(bbox.x0, bbox.y1 + .02, '[' + ft + ']', ha='left',
                      size=13, weight=550)
     # label with frequency bands
-    tx4 = myFig.text(bbox.x1 + .02, bbox.y1, 'Frequency filters:', ha='right',
+    tx4 = myFig.text(bbox.x1 + .02, bbox.y1, 'Frequency:', ha='right',
                      size=8, weight=550)
     
+ 
     for i in range(len(rad)):
-        myFig.text(bbox.x1 + .02, bbox.y1 - ((i + 1) * .015), rad[i] + ': ' +
-                   str(tbands[i][0] / 1e3) + ' - ' + str(tbands[i][1] / 1e3) +
+        myFig.text(bbox.x1 + .02, bbox.y1 - ((i + 1) * .015), rad[i] + ': '+
+                   str(tfreq/ 1e3) +
                    ' MHz', ha='right', size=8, weight=550)
     
         #Add magnetometer data
@@ -491,6 +494,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
                       '.fan.pdf')
     if show:
         myFig.show()
+        
 
 #    plot.clf()                  #Clear figure
 #    plot.close(plot.gcf())			#Close figure

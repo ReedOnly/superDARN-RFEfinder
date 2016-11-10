@@ -134,4 +134,3 @@ timerE=time.clock()
 print 'Total time used: '+secondsToStr(timerE-timerS)
     
     
-#shalala

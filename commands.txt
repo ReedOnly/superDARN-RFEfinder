@@ -55,3 +55,6 @@ git merge upstream/master
 
 other commands
 git reset --hard origin		#To overwrite local changes
+
+
+beta0.1

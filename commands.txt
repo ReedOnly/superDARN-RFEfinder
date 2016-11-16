@@ -3,7 +3,7 @@ Useful commands
 https://github.com/ReedOnly/superDARN-RFEfinder.git
 
 Making new local copy
-git clone --branch velMatrix https://github.com/ReedOnly/superDARN-RFEfinder.git
+git clone --branch beta0.1 https://github.com/ReedOnly/superDARN-RFEfinder.git
 
 
 Download from git

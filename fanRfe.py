@@ -1,4 +1,4 @@
-##SE line 462!!#Kristian Reed 14.08.2016
+##See line 462!!#Kristian Reed 14.08.2016
 
 """The fan module
 
@@ -28,10 +28,11 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from mpl_toolkits.basemap import Basemap, pyproj
 from davitpy.utils.timeUtils import *
 from davitpy.pydarn.sdio.radDataRead import *
+import davitpy.pydarn.plotting.plotMapGrd
 import logging
 
 
-def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param='velocity',
+def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', param='velocity',
             filtered=False, scale=[], channel=None, coords='geo',
             colors='lasse', gsct=False, fov=True, edgeColors='face',
             lowGray=False, fill=True, velscl=1000., legend=True,
@@ -129,8 +130,12 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
         import datetime as dt
         pydarn.plotting.fan.plotFan(dt.datetime(2013,3,16,16,30),['fhe','fhw'],param='power',gsct=True)
         pydarn.plotting.fan.plotFan(dt.datetime(2013,3,16,16,30),['fhe','fhw'],param='power',gsct=True,tFreqBands=[[10000,11000],[]])
-
+    
     """
+    savepath=newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +'.fan.png'
+    import os
+    if os.path.exists(savepath): return         #Skip if current plot already exists
+
     from davitpy import pydarn
     from davitpy import gme
     import datetime as dt
@@ -210,8 +215,9 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     for i in range(len(myFiles)):
         # read until we reach start time
         allBeams[i] = radDataReadRec(myFiles[i])
-        while (allBeams[i].time < sTime and allBeams[i] is not None):
+        while (allBeams[i] is not None and allBeams[i].time < sTime):
             allBeams[i] = radDataReadRec(myFiles[i])
+            
 
         # check that the file has data in the target interval
         if(allBeams[i] is None):
@@ -243,6 +249,7 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
         oldCpids.append(allBeams[i].cp)
 
         k = allBeams[i].prm.nrang
+        tfreq=allBeams[i].prm.tfreq
         b = 0
         latC.append(myFov.latFull[b][k])
         lonC.append(myFov.lonFull[b][k])
@@ -275,6 +282,7 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
                           height=10.0**3, lat_0=lat_0, lon_0=lon_0,
                           datetime=sTime)
     x, y = tmpmap(lonFull, latFull)
+    if len(x)==0: return
     minx = x.min() * 1.05     # since we don't want the map to cut off labels
     miny = y.min() * 1.05     # or FOVs of the radars we should alter the
     maxx = x.max() * 1.05     # extrema a bit.
@@ -294,12 +302,19 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     myFig = plot.figure(figsize=(12, 8))
 
     # draw the actual map we want
-    myMap = utils.mapObj(coords=coords, projection='stere', lat_0=lat_0,
-                         lon_0=lon_0, llcrnrlon=llcrnrlon, llcrnrlat=llcrnrlat,
-                         urcrnrlon=urcrnrlon, urcrnrlat=urcrnrlat,
-                         coastLineWidth=0.5, coastLineColor='k',
-                         fillOceans='w', fillContinents='w', fillLakes='w',
-                         datetime=sTime)
+    #myMap= utils.mapObj(coords=coords, projection='stere', lat_0=lat_0,
+#                         lon_0=lon_0, llcrnrlon=llcrnrlon, llcrnrlat=llcrnrlat,
+#                         urcrnrlon=urcrnrlon, urcrnrlat=urcrnrlat,
+#                         datetime=sTime)
+    #coastLineWidth=0.5, coastLineColor='k',
+                         #fillOceans='w', fillContinents='w', fillLakes='w',
+            
+    width2 = 111e3*80
+    myMap = utils.mapObj(boundinglat=65., lon_0=270, coords='mlt',datetime=sTime)
+    
+    #myMap = utils.mapObj(boundinglat=70.,gridLabels=True, coords='mlt',datetime=sTime)
+    
+    
     # overlay fields of view, if desired
     if(fov == 1):
         for i, r in enumerate(rad):
@@ -418,13 +433,20 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     tx3 = myFig.text(bbox.x0, bbox.y1 + .02, '[' + ft + ']', ha='left',
                      size=13, weight=550)
     # label with frequency bands
-    tx4 = myFig.text(bbox.x1 + .02, bbox.y1, 'Frequency filters:', ha='right',
+    tx4 = myFig.text(bbox.x1 + .02, bbox.y1, 'Frequency:', ha='right',
                      size=8, weight=550)
+    
+ 
     for i in range(len(rad)):
-        myFig.text(bbox.x1 + .02, bbox.y1 - ((i + 1) * .015), rad[i] + ': ' +
-                   str(tbands[i][0] / 1e3) + ' - ' + str(tbands[i][1] / 1e3) +
+        myFig.text(bbox.x1 + .02, bbox.y1 - ((i + 1) * .015), rad[i] + ': '+
+                   str(tfreq/ 1e3) +
                    ' MHz', ha='right', size=8, weight=550)
-
+    
+        #Add magnetometer data
+    tx5 = myFig.text(bbox.x1 +0.02, bbox.y1-0.04, 'OMNI By: '+str(imf[1])+' nT', ha='right',
+                     size=11, weight=450)
+    tx6 = myFig.text(bbox.x1 +0.02, bbox.y1-0.06, 'OMNI Bz: '+str(imf[2])+' nT', ha='right',
+                     size=11, weight=450)
     if(overlayPoes):
         pcols = gme.sat.poes.overlayPoesTed(myMap, myFig.gca(), cTime,
                                             param=poesparam, scMin=poesMin,
@@ -449,13 +471,21 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
     x,y=myMap(lon,lat)
     #x,y=lon,lat
     myMap.scatter(x, y, s=800, marker='o', facecolors='None', edgecolors='r',zorder=10)
+    
+    
+    #Overlaying convection plot
+    ax = myFig.add_subplot(111)
+    mapDatObj = davitpy.pydarn.plotting.plotMapGrd.MapConv(sTime, myMap, ax)
+    #mapDatObj.overlayMapFitVel()
+    mapDatObj.overlayCnvCntrs()
 
     # handle the outputs
     if png is True:
         # if not show:
         #   canvas = FigureCanvasAgg(myFig)
-        myFig.savefig(newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +
-                      '.fan.png', dpi=dpi)
+        savepath=newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +'.fan.png'
+        print savepath
+        myFig.savefig(savepath, dpi=dpi)
     if pdf:
         # if not show:
         #   canvas = FigureCanvasAgg(myFig)
@@ -464,8 +494,13 @@ def plotFanRfe(lon,lat,newpath,sTime, rad, interval=60, fileType='fitex', param=
                       '.fan.pdf')
     if show:
         myFig.show()
-		
-	myFig.close			#Close figure
+        
+
+#    plot.clf()                  #Clear figure
+#    plot.close(plot.gcf())			#Close figure
+    
+
+    
 
 
 def overlayFan(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,

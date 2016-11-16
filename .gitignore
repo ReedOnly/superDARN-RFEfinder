@@ -1,0 +1,15 @@
+#Files to ignore uploading
+
+*.pyc
+*~
+
+rfefinder.pyc
+secondsToStr.pyc
+fanRfe.pyc
+sdread.pyc
+
+files/**
+sample/**
+tools/data1.npy
+tools/data2.npy
+omni/**

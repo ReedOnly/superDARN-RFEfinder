@@ -24,7 +24,7 @@ import time
 
 #Initializing
 sTime = dt.datetime(2014,12,16,20,0)        #Scanning start Time
-eTime = dt.datetime(2014,12,16,23,0)         #Scanning end time
+eTime = dt.datetime(2014,12,16,22,0)         #Scanning end time
 radars=['inv']  #'inv','rkn'  , 'cly'            #Radars to scan
 
 LoadFile=False  #True for local RFE file

@@ -38,14 +38,14 @@ if not os.path.exists(newpath):
  
  
 
-rfe=[['rkn',dt.datetime(2014, 12, 19, 17, 16)]]
+rfe=[['rkn',dt.datetime(2014, 12, 19, 18, 16)]]
       
 
 for n in range(len(rfe)):
     element=rfe[n]      
     sTime = element[1]
     rad=[element[0]]
-    for t in range(sTime.minute-1,sTime.minute+1):
+    for t in range(sTime.minute,sTime.minute+1):
         
         if t >59:
             sTime=sTime.replace(minute=t-60)
@@ -65,7 +65,7 @@ for n in range(len(rfe)):
         #                        show=False, png=True,pdf=False,dpi=200)
         
         
-        plotFanRfe(0,0,newpath,imf,sTime,rad, param='velocity',interval=60, fileType='fitacf',
+        plotFanRfe(85,85,newpath,imf,sTime,rad, param='velocity',interval=60, fileType='fitex',
                     filtered=False, scale=[-500, 500], channel=None, coords='mlt',
                     colors='lasse', gsct=True, fov=True, edgeColors='face',
                     lowGray=False, fill=True, velscl=1000., legend=True,

@@ -74,7 +74,7 @@ def sdread(rfe,rad,sTime,eTime):
     channel=None
     bmnum=None
     cp=None
-    fileType='fitacf'
+    fileType='fitex'
     filtered=False
     src=None
     count=0
@@ -84,12 +84,19 @@ def sdread(rfe,rad,sTime,eTime):
                                     bmnum=bmnum,cp=cp,fileType=fileType,
                                     filtered=filtered, src=src)
     
-    myScan = pydarn.sdio.radDataReadScan(myPtr)
+    #Starting scan at first beam, and then until next time same beam comes
+    myScan=myPtr.readScan(firstBeam=0,useEvery=1,showBeams=True)
+    
+    #myScan = pydarn.sdio.radDataReadScan(myPtr)
     
     
     #Iterate thorugh all data from selected time period
+    nscans=1
     while (myScan!=None):
+        #Counting analyzed scans
+        nscans=nscans+1
         timeEvent=myScan[0].time#Time for first beam in scan
+        #print 'first beam in scan:', myScan[0].bmnum
         print '...Analyzing radar '+rad+' at time: '+str(timeEvent)
         nbeams=max(len(myScan),16)#number of beams          Rows
         
@@ -120,18 +127,20 @@ def sdread(rfe,rad,sTime,eTime):
         
         
         if gate is None:
-            myScan = pydarn.sdio.radDataReadScan(myPtr)
+            #myScan = pydarn.sdio.radDataReadScan(myPtr)
+            myScan=myPtr.readScan(firstBeam=0,useEvery=1,showBeams=True)
             continue#If no RFE go to next scan
     
         
+        utc=myScan[beam].time#time where the actal rfe happened
         #Finding mag position
         rsep=myScan[0].prm.rsep
         radId=myScan[0].stid
-        site = pydarn.radar.site(radId=radId, dt=timeEvent)
+        site = pydarn.radar.site(radId=radId, dt=utc)
         fov = pydarn.radar.radFov.fov(site=site, rsep=rsep,
                                           ngates=myScan[0].prm.nrang + 1,
                                           nbeams=site.maxbeam,coords='mag',
-                                          date_time=timeEvent)
+                                          date_time=utc)
         lat=fov.latCenter[beam, gate]
         lon=fov.lonCenter[beam, gate]
 
@@ -139,15 +148,15 @@ def sdread(rfe,rad,sTime,eTime):
         #Calculate MLT
         lonMlt, latMlt = coord_conv(lon, lat, 'mag', 'mlt',
                                     altitude=700.,
-                                    date_time=timeEvent)
+                                    date_time=utc)
         MLT=lonMlt * 24./360.      #Convert from degrees to hours
         MLT %= 24.           #Convert to 24 hr
         
         #Get IMF magnetic field from database
-        year=timeEvent.year
-        day=timeEvent.timetuple().tm_yday
-        hour=timeEvent.hour
-        minute=timeEvent.minute
+        year=utc.year
+        day=utc.timetuple().tm_yday
+        hour=utc.hour
+        minute=utc.minute
         imf=get_imf(year,day,hour,minute)
         #Remove fault values
         if abs(imf[0])>999: imf=(0,0,0)
@@ -158,11 +167,13 @@ def sdread(rfe,rad,sTime,eTime):
         rfeElement=array([[rad,beam,gate,lonMlt,MLT,lat,lon,imf,timeEvent]])
         rfe=append(rfe,rfeElement,axis=0)
         
-        myScan = pydarn.sdio.radDataReadScan(myPtr)
+        #myScan = pydarn.sdio.radDataReadScan(myPtr)
+        myScan=myPtr.readScan(firstBeam=0,useEvery=1,showBeams=True)
         
         
-    
-    print 'Number of RFE: ',len(rfe)-1
+        
+    print 'number og analyzed scans: ', nscans
+    print 'Number of RFE: ',len(rfe)-1,' ---> ', len(rfe)/nscans*100, '%'
 
     return rfe
 

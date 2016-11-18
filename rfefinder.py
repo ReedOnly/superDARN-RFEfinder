@@ -21,15 +21,14 @@ from mltplot import *
 import time
 
 
-
 #Initializing
-sTime = dt.datetime(2014,12,16,20,0)        #Scanning start Time
-eTime = dt.datetime(2014,12,16,22,0)         #Scanning end time
-radars=['inv']  #'inv','rkn'  , 'cly'            #Radars to scan
+sTime = dt.datetime(2014,12,16,0,0)        #Scanning start Time
+eTime = dt.datetime(2014,12,16,12,0)         #Scanning end time
+radars=['cly']  #'inv','rkn'  , 'cly'            #Radars to scan
 
 LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
-SaveXlsx=True     #Save as .xlsx spreadsheet
+SaveXlsx=False     #Save as .xlsx spreadsheet
 SaveNpy=True        #Save as .npy file
 RFEplot=True        #Make RFE plot
 fanPlot=True
@@ -89,7 +88,7 @@ if RFEplot:
         #Coordinates in map projection
         x,y=m(rfe[i,6],rfe[i,5])
         #x,y=lon,lat
-        m.scatter(x, y, s=50, marker='o', facecolors='none', edgecolors='r', zorder=2)
+        m.scatter(x, y, s=50, marker='.', edgecolors='r', zorder=2)
     
     pylab.savefig(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.png")))
     print 'Saved rfe plot'

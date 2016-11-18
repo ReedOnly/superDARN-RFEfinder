@@ -470,7 +470,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
     #Coordinates in map projection
     x,y=myMap(lon,lat)
     #x,y=lon,lat
-    myMap.scatter(x, y, s=800, marker='o', facecolors='None', edgecolors='r',zorder=10)
+    myMap.scatter(x, y, s=500, linewidths=2.5,marker='o', facecolors='None', edgecolors='r',zorder=10)
     
     
     #Overlaying convection plot

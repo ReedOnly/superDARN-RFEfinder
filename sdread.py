@@ -173,7 +173,7 @@ def sdread(rfe,rad,sTime,eTime):
         
         
     print 'number og analyzed scans: ', nscans
-    print 'Number of RFE: ',len(rfe)-1,' ---> ', len(rfe)/nscans*100, '%'
+    print 'Number of RFE: ',len(rfe)-1,' ---> ', float(len(rfe))/float(nscans)*100.0, '%'
 
     return rfe
 

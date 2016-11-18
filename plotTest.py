@@ -22,12 +22,13 @@ if not os.path.exists(newpath):
  
  
 """
-     ['cly',dt.datetime(2014, 12, 18, 16, 58)],
-     ['cly',dt.datetime(2014, 12, 20, 23, 44)],
-     ['cly',dt.datetime(2014, 12, 21, 20, 25)],
-     ['inv',dt.datetime(2014, 12, 16, 21, 20)],
-     ['inv',dt.datetime(2014, 12, 16, 00, 38)],
-     ['rkn',dt.datetime(2014, 12, 21, 17, 31)],
+     ['rkn',dt.datetime(2015, 12, 10, 18, 39)],
+     ['rkn',dt.datetime(2015, 12, 11, 13, 53)],
+     ['rkn',dt.datetime(2015, 12, 11, 13, 57)],
+     ['rkn',dt.datetime(2015, 12, 12, 13, 36)],
+     ['rkn',dt.datetime(2015, 12, 12, 17, 32)],
+     ['rkn',dt.datetime(2015, 12, 12, 18, 39)],
+     ['rkn',dt.datetime(2015, 12, 13, 14, 57)]
 """
  
  
@@ -38,14 +39,14 @@ if not os.path.exists(newpath):
  
  
 
-rfe=[['rkn',dt.datetime(2014, 12, 19, 18, 16)]]
+rfe=[['rkn',dt.datetime(2015, 12, 13, 14, 57)]]
       
 
 for n in range(len(rfe)):
     element=rfe[n]      
     sTime = element[1]
     rad=[element[0]]
-    for t in range(sTime.minute,sTime.minute+1):
+    for t in range(sTime.minute-6,sTime.minute+7):
         
         if t >59:
             sTime=sTime.replace(minute=t-60)
@@ -65,7 +66,7 @@ for n in range(len(rfe)):
         #                        show=False, png=True,pdf=False,dpi=200)
         
         
-        plotFanRfe(85,85,newpath,imf,sTime,rad, param='velocity',interval=60, fileType='fitex',
+        plotFanRfe(0,0,newpath,imf,sTime,rad, param='velocity',interval=60, fileType='fitex',
                     filtered=False, scale=[-500, 500], channel=None, coords='mlt',
                     colors='lasse', gsct=True, fov=True, edgeColors='face',
                     lowGray=False, fill=True, velscl=1000., legend=True,

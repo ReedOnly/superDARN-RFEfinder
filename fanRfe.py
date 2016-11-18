@@ -496,8 +496,8 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
         myFig.show()
         
 
-#    plot.clf()                  #Clear figure
-#    plot.close(plot.gcf())			#Close figure
+    plot.clf()                  #Clear figure
+    plot.close(plot.gcf())			#Close figure
     
 
     

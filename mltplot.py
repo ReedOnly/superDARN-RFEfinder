@@ -9,7 +9,7 @@ def mltplot(newpath,sTime,eTime,radars,mlat,mlt):
     # set up random data between 0 and 90
     
     fig = plt.figure(figsize=(8, 6)) 
-    st=fig.suptitle(str(radars)+' from '+sTime.strftime("%Y.%m.%d %H:%M")+' until '+ eTime.strftime("%H:%M UTC"),fontsize="x-large")
+    #st=fig.suptitle(str(radars)+' from '+sTime.strftime("%Y.%m.%d %H:%M")+' until '+ eTime.strftime("%H:%M UTC"),fontsize="x-large")
     gs = gridspec.GridSpec(2, 1, height_ratios=[3, 1]) 
     r = mlat#[np.random.random() * 90.0 for i in range(0,10)]
     

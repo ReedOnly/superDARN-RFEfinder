@@ -22,13 +22,25 @@ if not os.path.exists(newpath):
  
  
 """
+    World radar day 2014
+     ['cly',dt.datetime(2014, 12, 20, 23, 44),4,5],
+     ['inv',dt.datetime(2014, 12, 16, 00, 38),24,25],
+     ['inv',dt.datetime(2014, 12, 16, 21, 20),4,1],
+    
+    World radar day 2015
      ['rkn',dt.datetime(2015, 12, 10, 18, 39)],
-     ['rkn',dt.datetime(2015, 12, 11, 13, 53)],
      ['rkn',dt.datetime(2015, 12, 11, 13, 57)],
      ['rkn',dt.datetime(2015, 12, 12, 13, 36)],
      ['rkn',dt.datetime(2015, 12, 12, 17, 32)],
-     ['rkn',dt.datetime(2015, 12, 12, 18, 39)],
      ['rkn',dt.datetime(2015, 12, 13, 14, 57)]
+     
+     ['inv',dt.datetime(2015, 12, 9, 23, 03)],
+     
+    fitACF
+     ['rkn',dt.datetime(2014, 12, 19, 17, 14)],
+     ['rkn',dt.datetime(2014, 12, 21, 17, 31)],
+     ['cly',dt.datetime(2014, 12, 18, 16, 58)],
+     ['cly',dt.datetime(2014, 12, 21, 20, 25)]
 """
  
  
@@ -39,18 +51,18 @@ if not os.path.exists(newpath):
  
  
 
-rfe=[['rkn',dt.datetime(2015, 12, 13, 14, 57)]]
+rfe=[['inv',dt.datetime(2014, 12, 16, 00, 38),24,25]]
       
 
 for n in range(len(rfe)):
     element=rfe[n]      
     sTime = element[1]
     rad=[element[0]]
-    for t in range(sTime.minute-6,sTime.minute+7):
+    for t in range(sTime.minute-element[2],sTime.minute+element[3]):
         
         if t >59:
             sTime=sTime.replace(minute=t-60)
-            sTime=sTime.replace(hour=sTime.hour+1)
+            if t==60: sTime=sTime.replace(hour=sTime.hour+1)
         else:
             sTime=sTime.replace(minute=t)
         
@@ -62,8 +74,8 @@ for n in range(len(rfe)):
         
             
         #pydarn.plotting.fan.plotFan(sTime,rad, param='velocity',interval=60, fileType='fitacf',
-        #                        scale=[-500,500],coords='mag',gsct=False,fill=True,
-        #                        show=False, png=True,pdf=False,dpi=200)
+                                #scale=[-500,500],coords='mag',gsct=False,fill=True,
+                                #show=False, png=True,pdf=False,dpi=200)
         
         
         plotFanRfe(0,0,newpath,imf,sTime,rad, param='velocity',interval=60, fileType='fitex',
@@ -72,7 +84,7 @@ for n in range(len(rfe)):
                     lowGray=False, fill=True, velscl=1000., legend=True,
                     overlayPoes=False, poesparam='ted', poesMin=-3., poesMax=0.5,
                     poesLabel=r"Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]",
-                    overlayBnd=False, show=True, png=True, pdf=False, dpi=200,
+                    overlayBnd=False, show=False, png=True, pdf=False, dpi=200,
                     tFreqBands=[])
 
 

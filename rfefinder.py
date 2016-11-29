@@ -22,9 +22,20 @@ import time
 
 
 #Initializing
-sTime = dt.datetime(2014,12,16,0,0)        #Scanning start Time
-eTime = dt.datetime(2014,12,16,12,0)         #Scanning end time
+sTime = dt.datetime(2014,12,20,23,44)        #Scanning start Time
+eTime = dt.datetime(2014,12,20,23,45)      #Scanning end time
 radars=['cly']  #'inv','rkn'  , 'cly'            #Radars to scan
+
+rfelist=array([['cly',dt.datetime(2014, 12, 20, 23, 44)],
+     ['inv',dt.datetime(2014, 12, 16, 00, 38)],
+     ['inv',dt.datetime(2014, 12, 16, 21, 20)],
+     ['rkn',dt.datetime(2015, 12, 10, 18, 39)],
+     ['rkn',dt.datetime(2015, 12, 11, 13, 57)],
+     ['rkn',dt.datetime(2015, 12, 12, 13, 36)],
+     ['rkn',dt.datetime(2015, 12, 12, 17, 32)],
+     ['rkn',dt.datetime(2015, 12, 13, 14, 57)],
+     ['inv',dt.datetime(2015, 12, 9, 23, 03)]])
+      
 
 LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
@@ -50,11 +61,16 @@ if LoadFile: rfe=load(os.getcwd()+'/Files/'+'2016-08-17-10.31/2014-12-15-0730.np
 #Loading data and finding RFE
 if not LoadFile:
     rfe=array([[0,0,0,0,0,0,0,0,0]])
-    for rad in radars:
+    #for rad in radars:         #Uncomment for normal run!
+    for n in range(len(rfelist)):    #Comment out for normal run!
         save(newpath+'data.npy',rfe)          #Save for every radar in case it stops
         timerSTmp=time.clock()
         rfeTmp=array([[0,0,0,0,0,0,0,0,0]])
-        rfeTmp=sdread(rfeTmp,rad,sTime,eTime)
+        
+        #rfeTmp=sdread(rfeTmp,rad,sTime,eTime)      #Uncomment for normal run!
+        event=rfelist[n]            #Comment out for normal run!
+        rfeTmp=sdread(rfeTmp,event[0],event[1],event[1]+datetime.timedelta(minutes=1))   #Comment out for normal run!
+        
         rfeTmp = delete(rfeTmp, 0, axis=0)
         rfe = append(rfe,rfeTmp,axis=0)
         timerETmp=time.clock()

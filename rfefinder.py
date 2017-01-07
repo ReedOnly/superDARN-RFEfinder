@@ -23,7 +23,7 @@ import time
 
 #Initializing
 sTime = dt.datetime(2016,12,1,0,0)        #Scanning start Time
-eTime = dt.datetime(2016,12,9,0,0)      #Scanning end time
+eTime = dt.datetime(2016,12,3,0,0)      #Scanning end time
 radars=['lyr']  #'inv','rkn'  , 'cly'            #Radars to scan
 
 rfelist=array([['cly',dt.datetime(2014, 12, 20, 23, 44)],
@@ -37,12 +37,12 @@ rfelist=array([['cly',dt.datetime(2014, 12, 20, 23, 44)],
      ['inv',dt.datetime(2015, 12, 9, 23, 03)]])
       
 
-LoadFile=True  #True for local RFE file
+LoadFile=False  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
 SaveXlsx=True     #Save as .xlsx spreadsheet
 SaveNpy=True        #Save as .npy file
 RFEplot=True        #Make RFE plot
-fanPlot=False
+fanPlot=True
 
 timerS=time.clock()
 

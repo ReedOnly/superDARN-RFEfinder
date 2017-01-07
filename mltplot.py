@@ -14,9 +14,9 @@ def mltplot(newpath,sTime,eTime,radars,mlat,mlt):
     r = mlat#[np.random.random() * 90.0 for i in range(0,10)]
     
     # set up 24 hours matching the random data above
-    hours = np.linspace(0.0,24.0,len(r))
+    #hours = np.linspace(0.0,24.0,len(r))
     # scaling the 24 hours to the full circle, 2pi
-    theta = hours / 24.0 * (2.0 * np.pi)
+    theta = mlt / 24.0 * (2.0 * np.pi)
     
     # reverse your data, so that 90 becomes 0:
     r_rev = [(ri - 90.0) * -1.0 for ri in r]
@@ -26,7 +26,7 @@ def mltplot(newpath,sTime,eTime,radars,mlat,mlt):
     fig1.scatter(theta, r_rev, color='r', linewidth=0.1)
     
     # define your axis limits
-    fig1.set_ylim([0.0, 30.0])
+    fig1.set_ylim([0.0, 20.0])
     
     # statically reverse your y-tick-labels
     # caution: this turns your labels into strings

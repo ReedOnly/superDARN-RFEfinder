@@ -477,7 +477,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
     ax = myFig.add_subplot(111)
     mapDatObj = davitpy.pydarn.plotting.plotMapGrd.MapConv(sTime, myMap, ax)
     #mapDatObj.overlayMapFitVel()
-    mapDatObj.overlayCnvCntrs()
+    #smapDatObj.overlayCnvCntrs()
 
     # handle the outputs
     if png is True:

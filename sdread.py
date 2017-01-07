@@ -158,6 +158,7 @@ def sdread(rfe,rad,sTime,eTime):
         hour=utc.hour
         minute=utc.minute
         imf=get_imf(year,day,hour,minute)
+        if imf== None:imf=(0,0,0)
         #Remove fault values
         if abs(imf[0])>999: imf=(0,0,0)
         

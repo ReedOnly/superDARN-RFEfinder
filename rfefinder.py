@@ -22,9 +22,9 @@ import time
 
 
 #Initializing
-sTime = dt.datetime(2014,12,20,23,44)        #Scanning start Time
-eTime = dt.datetime(2014,12,20,23,45)      #Scanning end time
-radars=['cly']  #'inv','rkn'  , 'cly'            #Radars to scan
+sTime = dt.datetime(2016,12,1,0,0)        #Scanning start Time
+eTime = dt.datetime(2016,12,9,0,0)      #Scanning end time
+radars=['lyr']  #'inv','rkn'  , 'cly'            #Radars to scan
 
 rfelist=array([['cly',dt.datetime(2014, 12, 20, 23, 44)],
      ['inv',dt.datetime(2014, 12, 16, 00, 38)],
@@ -37,12 +37,12 @@ rfelist=array([['cly',dt.datetime(2014, 12, 20, 23, 44)],
      ['inv',dt.datetime(2015, 12, 9, 23, 03)]])
       
 
-LoadFile=False  #True for local RFE file
+LoadFile=True  #True for local RFE file
 SaveScratch=False	#Save in /scratch folder
-SaveXlsx=False     #Save as .xlsx spreadsheet
+SaveXlsx=True     #Save as .xlsx spreadsheet
 SaveNpy=True        #Save as .npy file
 RFEplot=True        #Make RFE plot
-fanPlot=True
+fanPlot=False
 
 timerS=time.clock()
 
@@ -56,25 +56,25 @@ if not os.path.exists(newpath):
 	os.makedirs(newpath)
 
 #Loading stored file
-if LoadFile: rfe=load(os.getcwd()+'/Files/'+'2016-08-17-10.31/2014-12-15-0730.npy')#15dec2014.npy
+if LoadFile: rfe=load(os.getcwd()+'/files/'+'lyr/data.npy')#15dec2014.npy
 
 #Loading data and finding RFE
 if not LoadFile:
     rfe=array([[0,0,0,0,0,0,0,0,0]])
-    #for rad in radars:         #Uncomment for normal run!
-    for n in range(len(rfelist)):    #Comment out for normal run!
+    for rad in radars:         #Uncomment for normal run!
+    #for n in range(len(rfelist)):    #Comment out for normal run!
         save(newpath+'data.npy',rfe)          #Save for every radar in case it stops
         timerSTmp=time.clock()
         rfeTmp=array([[0,0,0,0,0,0,0,0,0]])
         
-        #rfeTmp=sdread(rfeTmp,rad,sTime,eTime)      #Uncomment for normal run!
-        event=rfelist[n]            #Comment out for normal run!
-        rfeTmp=sdread(rfeTmp,event[0],event[1],event[1]+datetime.timedelta(minutes=1))   #Comment out for normal run!
+        rfeTmp=sdread(rfeTmp,rad,sTime,eTime)      #Uncomment for normal run!
+        #event=rfelist[n]            #Comment out for normal run!
+        #rfeTmp=sdread(rfeTmp,event[0],event[1],event[1]+datetime.timedelta(minutes=1))   #Comment out for normal run!
         
         rfeTmp = delete(rfeTmp, 0, axis=0)
         rfe = append(rfe,rfeTmp,axis=0)
         timerETmp=time.clock()
-        print 'Time used for '+rad+': '+secondsToStr(timerETmp-timerSTmp)
+        print 'Time used for '+str(radars)+': '+secondsToStr(timerETmp-timerSTmp)
     
     if len(rfe)>1:
         rfe = delete(rfe, 0, axis=0)
@@ -92,13 +92,13 @@ print 'Time used: '+secondsToStr(time.clock()-timerS)
 #Creating map with RFE
 if RFEplot:
     plt.figure(figsize=(9,9))
-    plt.title(str(radars)+' from '+sTime.strftime("%Y.%m.%d %H:%M")+' until '+ eTime.strftime("%H:%M UTC"),fontsize="x-large")
+    #plt.title(str(radars)+' from '+sTime.strftime("%Y.%m.%d %H:%M")+' until '+ eTime.strftime("%H:%M UTC"),fontsize="x-large")
     width = 111e3*60
     m = plotUtils.mapObj(width=width, height=width, lat_0=90., lon_0=60, coords='mag')
     # Plotting some radars
-    overlayRadar(m, fontSize=12, codes=['inv','rkn','cly'])
+    overlayRadar(m, fontSize=54, codes=['lyr'])#'inv','rkn','cly'
     # Plot radar fov
-    overlayFov(m, codes=['inv','rkn','cly'], maxGate=70, beams=[])#0,6,11,12,13,15
+    overlayFov(m, codes=['lyr'], maxGate=70, beams=[])#0,6,11,12,13,15 'inv','rkn','cly'
     #Add RFE points
     for i in range(len(rfe)):
         #Coordinates in map projection
@@ -106,7 +106,7 @@ if RFEplot:
         #x,y=lon,lat
         m.scatter(x, y, s=50, marker='.', edgecolors='r', zorder=2)
     
-    pylab.savefig(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.png")))
+    pylab.savefig(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.png")),dpi=400)
     print 'Saved rfe plot'
     #plt.show()
     

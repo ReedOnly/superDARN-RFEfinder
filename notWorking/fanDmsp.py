@@ -1,5 +1,10 @@
 ##See line 462!!#Kristian Reed 14.08.2016
 
+
+
+
+
+
 """The fan module
 
 Module generating fan plots
@@ -32,8 +37,14 @@ from davitpy.pydarn.sdio.radDataRead import *
 import davitpy.pydarn.plotting.plotMapGrd
 import logging
 
+from tools import *
+from fanDmsp import *
+import datetime as dt
 
-def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', param='velocity',
+
+
+
+def plotFanDmsp(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', param='velocity',
             filtered=False, scale=[], channel=None, coords='geo',
             colors='lasse', gsct=False, fov=True, edgeColors='face',
             lowGray=False, fill=True, velscl=1000., legend=True,
@@ -311,7 +322,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
                          #fillOceans='w', fillContinents='w', fillLakes='w',
             
     width2 = 111e3*80
-    myMap = utils.mapObj(boundinglat=65., lon_0=0, coords='mlt',datetime=sTime)
+    myMap = utils.mapObj(boundinglat=65., lon_0=270, coords='mlt',datetime=sTime)
     
     #myMap = utils.mapObj(boundinglat=70.,gridLabels=True, coords='mlt',datetime=sTime)
     
@@ -327,8 +338,6 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
 ######            
             pydarn.plotting.overlayFov(myMap, codes=r, dateTime=sTime, maxGate=60,
                                       lineColor='k', lineWidth=1.0)
-            
-            pydarn.plotting.overlayRadar(myMap, fontSize=27, codes=r, dateTime=sTime)
 
     logging.debug(dt.datetime.now() - t1)
     # manually draw the legend
@@ -387,7 +396,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
             allBeams[i] = radDataReadRec(myFiles[i])
         # if there is no data in scans, overlayFan will object
         if scans == []: continue
-        intensities, pcoll = overlayFanRfe(scans, myMap, myFig, param, coords,
+        intensities, pcoll = overlayFan(scans, myMap, myFig, param, coords,
                                         gsct=gsct, site=sites[i], fov=fovs[i],
                                         fill=fill, velscl=velscl, dist=dist,
                                         cmap=cmap, norm=norm)
@@ -484,10 +493,27 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
     mapDatObj = davitpy.pydarn.plotting.plotMapGrd.MapConv(sTime, myMap, ax)
     #mapDatObj.overlayMapFitVel()
    
-    mapDatObj.overlayCnvCntrs()         #Put this on if available
+    #mapDatObj.overlayCnvCntrs()
     #mapDatObj.overlayHMB(hmbCol='Green')
     #pydarn.plotting.overlayFov(myMap, codes=['inv','cly'], dateTime=sTime,maxGate=60)
                                        #fovObj=fovs[i],maxGate=70
+                                       
+    #ADD DMSP SSUSI DATA. Code from Christer
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     # handle the outputs
     if png is True:
@@ -517,7 +543,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
     
 
 
-def overlayFanRfe(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,
+def overlayFan(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,
                fov=None, gs_flg=[], fill=True, velscl=1000., dist=1000.,
                cmap=None, norm=None, alpha=1):
 
@@ -700,10 +726,10 @@ def overlayFanRfe(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,
             # plot the i-s as filled circles
             ccoll = myFig.gca().scatter(numpy.array(verts[0])[inx],
                                         numpy.array(verts[1])[inx],
-                                        s=.03 * numpy.array(
-                                        intensities[1])[inx], cmap=cmap, zorder=6,
+                                        s=.1 * numpy.array(
+                                        intensities[1])[inx], zorder=10,
                                         marker='o', linewidths=.5,
-                                        edgecolors='face',
+                                        edgecolors='face', cmap=cmap,
                                         norm=norm)
 
             # set color array to intensities
@@ -716,5 +742,27 @@ def overlayFanRfe(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,
             myFig.gca().add_collection(lcoll)
 
             return intensities, lcoll
+            
+            
+sTime=dt.datetime(2014, 12, 16, 00, 38)
+rad=['inv']
+
+
+
+newpath=os.getcwd()+'/'
+year=sTime.year
+day=sTime.timetuple().tm_yday
+hour=sTime.hour
+minute=sTime.minute
+imf=get_imf(year,day,hour,minute)
+
+plotFanDmsp(0,0,newpath,imf,sTime,rad, param='velocity',interval=60, fileType='fitex',
+            filtered=False, scale=[-500, 500], channel=None, coords='mlt',
+            colors='lasse', gsct=True, fov=True, edgeColors='face',
+            lowGray=False, fill=True, velscl=1000., legend=True,
+            overlayPoes=False, poesparam='ted', poesMin=-3., poesMax=0.5,
+            poesLabel=r"Total Log Energy Flux [ergs cm$^{-2}$ s$^{-1}$]",
+            overlayBnd=False, show=False, png=True, pdf=False, dpi=200,
+            tFreqBands=[])
 
 

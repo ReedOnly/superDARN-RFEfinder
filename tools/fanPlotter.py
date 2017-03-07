@@ -41,7 +41,7 @@ print pandasRfe[['Time','Site','Beam','Gate','MLT', 'IMF']]
 
 
 
-if fanPlot and len(rfe)>1:    
+if len(rfe)>1:    
     for i in range(len(rfe)):#len(rfe)
 	#if i==71: continue	#Remove rfe if error while plotting
         print '***Plot ',i,' out of ',len(rfe),'   ',secondsToStr(time.clock()-timerS),'***'

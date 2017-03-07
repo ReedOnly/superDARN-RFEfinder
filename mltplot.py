@@ -23,6 +23,7 @@ def mltplot(newpath,sTime,eTime,radars,mlat,mlt):
     
     # set up your polar plot
     fig1 = plt.subplot(gs[0], projection='polar')
+    fig1.set_theta_zero_location("S")
     fig1.scatter(theta, r_rev, color='r', linewidth=0.1)
     
     # define your axis limits
@@ -46,8 +47,8 @@ def mltplot(newpath,sTime,eTime,radars,mlat,mlt):
     #
     # the number of ticks around the polar plot is used to derive
     #    the appropriate increment for the 24 hours
-    fig1.set_xticklabels(['{:.1f}'.format(xlabel) \
-                        for xlabel in np.arange(0.0,24.0,(24.0 / len(fig1.get_xticklabels())))])
+    fig1.set_xticklabels(['{:.0f}'.format(xlabel) \
+                        for xlabel in np.arange(0,24,(24 / len(fig1.get_xticklabels())))])
     
     fig1.grid(True)
     

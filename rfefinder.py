@@ -21,10 +21,16 @@ from mltplot import *
 import time
 
 
+
+
+#sTime = dt.datetime(2014, 9, 15, 00)       
+#eTime = dt.datetime(2014, 12, 22, 00) 
+
+
 #Initializing
-sTime = dt.datetime(2016,12,1,0,0)        #Scanning start Time
-eTime = dt.datetime(2016,12,3,0,0)      #Scanning end time
-radars=['lyr']  #'inv','rkn'  , 'cly'            #Radars to scan
+sTime = dt.datetime(2014, 12, 16, 0)        #Scanning start Time
+eTime = dt.datetime(2015, 1, 15, 0)     #Scanning end time
+radars=['han']  #'inv','rkn'  , 'cly'            #Radars to scan
 
 rfelist=array([['cly',dt.datetime(2014, 12, 20, 23, 44)],
      ['inv',dt.datetime(2014, 12, 16, 00, 38)],
@@ -96,15 +102,15 @@ if RFEplot:
     width = 111e3*60
     m = plotUtils.mapObj(width=width, height=width, lat_0=90., lon_0=60, coords='mag')
     # Plotting some radars
-    overlayRadar(m, fontSize=54, codes=['lyr'])#'inv','rkn','cly'
+    overlayRadar(m, fontSize=30, codes=['inv','rkn','cly'])#'lyr'
     # Plot radar fov
-    overlayFov(m, codes=['lyr'], maxGate=70, beams=[])#0,6,11,12,13,15 'inv','rkn','cly'
+    overlayFov(m, codes=['inv','rkn','cly'], maxGate=70, beams=[])#0,6,11,12,13,15 'inv','rkn','cly'
     #Add RFE points
     for i in range(len(rfe)):
         #Coordinates in map projection
         x,y=m(rfe[i,6],rfe[i,5])
         #x,y=lon,lat
-        m.scatter(x, y, s=50, marker='.', edgecolors='r', zorder=2)
+        m.scatter(x, y, s=2, linewidths=2, color='r', zorder=2)
     
     pylab.savefig(newpath+str(sTime.strftime("%Y-%m-%d-%H%M.png")),dpi=400)
     print 'Saved rfe plot'

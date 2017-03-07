@@ -13,3 +13,4 @@ sample/**
 tools/data1.npy
 tools/data2.npy
 omni/**
+tmp/

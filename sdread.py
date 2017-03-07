@@ -50,8 +50,8 @@ def rfeFinder(velMatrix):
     for i in range(1,rows-1):
         for n in range(cols-3):
             if (velMatrix[n+2,i]>250 and velMatrix[n,i]<-250) or (velMatrix[n+2,i]<-250 and velMatrix[n,i]>250):
-                if (abs(velMatrix[n,i]-velMatrix[n+1,i])<200):                  #Check for min 2 gate rfe
-                    if (abs(velMatrix[n,i]-velMatrix[n+3,i])>500):              #Check strong gradient drift
+                if (abs(velMatrix[n,i]-velMatrix[n+1,i])<200):#200                  #Check for min 2 gate rfe
+                    if (abs(velMatrix[n,i]-velMatrix[n+3,i])>500): #500             #Check strong gradient drift
                         if  (abs(velMatrix[n,i]-velMatrix[n,i+1])<200 or \
                             abs(velMatrix[n,i]-velMatrix[n+1,i+1])<200) and \
                             (abs(velMatrix[n,i]-velMatrix[n,i-1])<200 or \
@@ -77,6 +77,7 @@ def sdread(rfe,rad,sTime,eTime):
     fileType='fitex'
     filtered=False
     src=None
+    #tempo='/scratch/sddata/'
     count=0
     
     #Fetching data
@@ -138,7 +139,7 @@ def sdread(rfe,rad,sTime,eTime):
         radId=myScan[0].stid
         site = pydarn.radar.site(radId=radId, dt=utc)
         fov = pydarn.radar.radFov.fov(site=site, rsep=rsep,
-                                          ngates=myScan[0].prm.nrang + 1,
+                                          ngates=myScan[0].prm.nrang + 20,  #+20 in case some beams are larger
                                           nbeams=site.maxbeam,coords='mag',
                                           date_time=utc)
         lat=fov.latCenter[beam, gate]
@@ -147,12 +148,22 @@ def sdread(rfe,rad,sTime,eTime):
 
         #Calculate MLT
         lonMlt, latMlt = coord_conv(lon, lat, 'mag', 'mlt',
-                                    altitude=700.,
+                                    altitude=300.,
                                     date_time=utc)
         MLT=lonMlt * 24./360.      #Convert from degrees to hours
         MLT %= 24.           #Convert to 24 hr
         
-        #Get IMF magnetic field from database
+        
+        if not (7 < MLT < 17):
+            myScan=myPtr.readScan(firstBeam=0,useEvery=1,showBeams=True)
+            continue     #Sort out for newly opened flux
+        if gate < 30:
+            myScan=myPtr.readScan(firstBeam=0,useEvery=1,showBeams=True)
+            continue              # Skip the first 600 km (38 for pyk, 30 for han)
+        
+            
+            
+            #Get IMF magnetic field from database
         year=utc.year
         day=utc.timetuple().tm_yday
         hour=utc.hour

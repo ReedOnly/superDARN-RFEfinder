@@ -18,7 +18,7 @@ imf[Bx,By,Bz]:(float)"""
 
 
 #Connect to IMF database
-con = lite.connect('/tmp/sd/.radars.sqlite')
+con = lite.connect('/scratch/sddata/.radars.sqlite')
 
 with con:
     

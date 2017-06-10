@@ -17,14 +17,11 @@ import matplotlib.pyplot as plt
 from matplotlib import *
 from scipy import *
 import pandas as pd
-from secondsToStr import *
+from tools import *
 from fanRfe import *
 import time
 
 
-
-
-fanPlot=True
 
 timerS=time.clock()
 
@@ -44,17 +41,15 @@ print pandasRfe[['Time','Site','Beam','Gate','MLT', 'IMF']]
 
 
 
-if fanPlot and len(rfe)>1:    
+if len(rfe)>1:    
     for i in range(len(rfe)):#len(rfe)
 	#if i==71: continue	#Remove rfe if error while plotting
         print '***Plot ',i,' out of ',len(rfe),'   ',secondsToStr(time.clock()-timerS),'***'
         plotFanRfe(rfe[i,3],rfe[i,5],newpath,rfe[i,7],rfe[i,8],[rfe[i,0]], param='velocity',interval=60, fileType='fitex',
-                                scale=[-500,500],coords='mlt',gsct=True,fill=True,overlayPoes=True,
+                                scale=[-500,500],coords='mlt',gsct=True,fill=True,overlayPoes=False,
                                 show=False, png=True,pdf=False,dpi=200)
         print 'time used: '+ secondsToStr(time.clock()-timerS)
     print 'Saved fan plot figures'
     
 timerE=time.clock()
 print 'Total time used: '+secondsToStr(timerE-timerS)
-    
-    

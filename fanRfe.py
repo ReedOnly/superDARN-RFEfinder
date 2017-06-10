@@ -1,3 +1,6 @@
+#Code used for finding RFEs and making the plots used in the Master Theisis of Kristian Reed
+#Written by Kristian Reed 10.06.2017
+
 ##See line 462!!#Kristian Reed 14.08.2016
 
 """The fan module
@@ -15,6 +18,7 @@ from davitpy import utils
 import numpy
 import math
 import matplotlib
+import matplotlib.colors as colors
 import calendar
 import pylab
 import matplotlib.pyplot as plot
@@ -310,7 +314,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
                          #fillOceans='w', fillContinents='w', fillLakes='w',
             
     width2 = 111e3*80
-    myMap = utils.mapObj(boundinglat=65., lon_0=270, coords='mlt',datetime=sTime)
+    myMap = utils.mapObj(boundinglat=65., lon_0=0, coords='mlt',datetime=sTime)
     
     #myMap = utils.mapObj(boundinglat=70.,gridLabels=True, coords='mlt',datetime=sTime)
     
@@ -318,11 +322,16 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
     # overlay fields of view, if desired
     if(fov == 1):
         for i, r in enumerate(rad):
-            pydarn.plotting.overlayRadar(myMap, codes=r, dateTime=sTime)
+            pydarn.plotting.overlayRadar(myMap, fontSize=12, codes=['inv','cly','rkn','lyr'], dateTime=sTime)
             # this was missing fovObj! We need to plot the fov for this
             # particular sTime.
-            pydarn.plotting.overlayFov(myMap, codes=r, dateTime=sTime,
-                                       fovObj=fovs[i])
+            pydarn.plotting.overlayFov(myMap, codes=['inv','cly','rkn','lyr'], dateTime=sTime, maxGate=60,
+                                      lineColor='gray', lineWidth=0.8)
+######            
+            pydarn.plotting.overlayFov(myMap, codes=r, dateTime=sTime, maxGate=60,
+                                      lineColor='k', lineWidth=1.0)
+            
+            pydarn.plotting.overlayRadar(myMap, fontSize=12, codes=r, dateTime=sTime)
 
     logging.debug(dt.datetime.now() - t1)
     # manually draw the legend
@@ -381,7 +390,7 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
             allBeams[i] = radDataReadRec(myFiles[i])
         # if there is no data in scans, overlayFan will object
         if scans == []: continue
-        intensities, pcoll = overlayFan(scans, myMap, myFig, param, coords,
+        intensities, pcoll = overlayFanRfe(scans, myMap, myFig, param, coords,
                                         gsct=gsct, site=sites[i], fov=fovs[i],
                                         fill=fill, velscl=velscl, dist=dist,
                                         cmap=cmap, norm=norm)
@@ -443,9 +452,12 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
                    ' MHz', ha='right', size=8, weight=550)
     
         #Add magnetometer data
-    tx5 = myFig.text(bbox.x1 +0.02, bbox.y1-0.04, 'OMNI By: '+str(imf[1])+' nT', ha='right',
+    if imf[1] =='pm': imf[1]=0
+    if imf[2] =='pm': imf[2]=0
+    print imf[1]
+    tx5 = myFig.text(bbox.x1 +0.02, bbox.y1-0.04, 'OMNI By: '+ '%.2f'%imf[1]+' nT', ha='right',
                      size=11, weight=450)
-    tx6 = myFig.text(bbox.x1 +0.02, bbox.y1-0.06, 'OMNI Bz: '+str(imf[2])+' nT', ha='right',
+    tx6 = myFig.text(bbox.x1 +0.02, bbox.y1-0.06, 'OMNI Bz: '+ '%.2f'%imf[2]+' nT', ha='right',
                      size=11, weight=450)
     if(overlayPoes):
         pcols = gme.sat.poes.overlayPoesTed(myMap, myFig.gca(), cTime,
@@ -470,14 +482,17 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
     #Coordinates in map projection
     x,y=myMap(lon,lat)
     #x,y=lon,lat
-    myMap.scatter(x, y, s=800, marker='o', facecolors='None', edgecolors='r',zorder=10)
+    myMap.scatter(x, y, s=500, linewidths=2.5,marker='o', facecolors='None', edgecolors='r',zorder=10)
     
     
     #Overlaying convection plot
     ax = myFig.add_subplot(111)
     mapDatObj = davitpy.pydarn.plotting.plotMapGrd.MapConv(sTime, myMap, ax)
     #mapDatObj.overlayMapFitVel()
-    mapDatObj.overlayCnvCntrs()
+    if mapDatObj.mapData is not None: mapDatObj.overlayCnvCntrs()       #Put this on if available
+    #mapDatObj.overlayHMB(hmbCol='Green')
+    #pydarn.plotting.overlayFov(myMap, codes=['inv','cly'], dateTime=sTime,maxGate=60)
+                                       #fovObj=fovs[i],maxGate=70
 
     # handle the outputs
     if png is True:
@@ -486,24 +501,29 @@ def plotFanRfe(lon,lat,newpath, imf, sTime, rad, interval=60, fileType='fitex', 
         savepath=newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +'.fan.png'
         print savepath
         myFig.savefig(savepath, dpi=dpi)
+        
     if pdf:
         # if not show:
         #   canvas = FigureCanvasAgg(myFig)
         logging.info('Saving as pdf...this may take a moment...')
-        myFig.savefig(str(rad)+sTime.strftime("%Y%m%d.%H%M.") + str(interval) +
-                      '.fan.pdf')
+        savepath=newpath+str(rad)+sTime.strftime("%Y%m%d.%H%M.%S.") + '%.2f' % lon +'.fan.pdf'
+        print savepath
+        myFig.savefig(savepath, dpi=dpi)
     if show:
         myFig.show()
         
 
-#    plot.clf()                  #Clear figure
-#    plot.close(plot.gcf())			#Close figure
+    myFig.clear()                  #Clear figure
+    plot.clf()
+    plot.close(myFig)
+    pylab.close(myFig)
+    #plot.close(plot.gcf())			#Close figure
     
 
     
 
 
-def overlayFan(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,
+def overlayFanRfe(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,
                fov=None, gs_flg=[], fill=True, velscl=1000., dist=1000.,
                cmap=None, norm=None, alpha=1):
 
@@ -686,10 +706,10 @@ def overlayFan(myData, myMap, myFig, param, coords='geo', gsct=0, site=None,
             # plot the i-s as filled circles
             ccoll = myFig.gca().scatter(numpy.array(verts[0])[inx],
                                         numpy.array(verts[1])[inx],
-                                        s=.1 * numpy.array(
-                                        intensities[1])[inx], zorder=10,
+                                        s=.03 * numpy.array(
+                                        intensities[1])[inx], cmap=cmap, zorder=6,
                                         marker='o', linewidths=.5,
-                                        edgecolors='face', cmap=cmap,
+                                        edgecolors='face',
                                         norm=norm)
 
             # set color array to intensities

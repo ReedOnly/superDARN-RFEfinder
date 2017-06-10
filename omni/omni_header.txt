@@ -1,4 +1,8 @@
-  FORMAT OF THE SUBSETTED FILE
+OMNI data downloaded from:
+https://omniweb.gsfc.nasa.gov/form/omni_min.html  
+
+
+FORMAT OF THE SUBSETTED FILE
     
     ITEMS                      FORMAT   
      
@@ -11,3 +15,4 @@
  7 BZ, nT (GSM)                  F8.2      
 
 This file was produced by SPDF OMNIWeb Plus service
+

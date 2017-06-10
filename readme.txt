@@ -1,6 +1,7 @@
 Code used for finding RFEs and making the plots used in the Master Theisis of Kristian Reed
 Written by Kristian Reed 10.06.2017
 
+#Need to be installed to work: DaViTpy (https://github.com/vtsuperdarn/davitpy) and Pandas (https://github.com/pandas-dev/pandas)
 
 **THIS CODE COMES WITHOUT ANY WARRANTY**
 
